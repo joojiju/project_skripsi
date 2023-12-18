@@ -86,9 +86,9 @@ class RoomController extends Controller
         $grid->id('ID');
 
         $grid->column('name', 'Nama');
-        $grid->column('building.name', 'Tipe Ruangan');
+        $grid->column('building.name', 'Gedung');
         $grid->column('max_people', 'Maks Orang');
-        $grid->column('room_status', 'Status Ruangan')->display(function ($value) {
+        $grid->column('room_status', 'Status Gedung')->display(function ($value) {
             $val = ['info', 'Kosong'];
             foreach ($this->borrow_rooms as $borrow_room) {
                 $lecturer_approval_status = $borrow_room->lecturer_approval_status;
@@ -150,7 +150,7 @@ class RoomController extends Controller
 
         $show->id('ID');
         $show->field('name', 'Nama');
-        $show->field('building.name', 'Tipe Ruangan');
+        $show->field('building.name', 'Gedung');
         $show->field('max_people', 'Maks Orang');
         $show->field('status', 'Status')->using(RoomStatus::asSelectArray());
         $show->field('notes', 'Catatan');
