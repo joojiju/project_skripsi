@@ -11,7 +11,7 @@ return [
     | login page.
     |
     */
-    'name' => 'Pinjam Ruang',
+    'name' => 'SIPRIG',
 
     /*
     |--------------------------------------------------------------------------
@@ -22,7 +22,7 @@ return [
     | `img` tag, eg '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo' => '<b>Pinjam Ruang</b>',
+    'logo' => '<b>SIPRIG</b>',
 
     /*
     |--------------------------------------------------------------------------
@@ -85,7 +85,7 @@ return [
     | Html title for all pages.
     |
     */
-    'title' => 'Pinjam Ruang',
+    'title' => 'SIPRIG',
 
     /*
     |--------------------------------------------------------------------------

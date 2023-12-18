@@ -19,7 +19,7 @@ class HomeController extends Controller
     {
         return $content
             ->title('Dashboard')
-            ->description('Pinjam ruang')
+            ->description('SIPRIG')
             ->row(function (Row $row) {
                 // Widget for users
                 $row->column(3, function (Column $column) {
@@ -28,7 +28,7 @@ class HomeController extends Controller
                     $column->append($infoBox);
                 });
 
-                // Widget for room types
+                // Widget for buildings
                 $row->column(3, function (Column $column) {
                     $count_buildings = \DB::table('buildings')->count();
                     $infoBox = new InfoBox('Bangunan', 'cubes', 'green', route('admin.buildings.index'), $count_buildings);
