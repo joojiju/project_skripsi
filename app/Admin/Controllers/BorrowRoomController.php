@@ -6,6 +6,7 @@ use App\Enums\ApprovalStatus;
 use App\Models\BorrowRoom;
 use App\Http\Controllers\Controller;
 use App\Models\Room;
+use App\Models\Inventory;
 use Carbon\Carbon;
 use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Controllers\HasResourceActions;

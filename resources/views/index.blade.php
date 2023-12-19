@@ -8,7 +8,7 @@
           <div class="col-md-7 ftco-animate">
           	<h2 class="subheading">Selamat datang di SIPRIG (Sistem Informasi Peminjaman Ruangan dan Inventaris Gereja Kristen Jawa Pamulang)</h2>
           	<h1 class="mb-4">Pinjam ruangan mudah dan cepat</h1>
-            <p><a href="#" class="btn btn-primary">Pelajari lebih lanjut</a> <a href="#" class="btn btn-white">Hubungi kami</a></p>
+            <p><a href="{{ route('rooms') }}" class="btn btn-primary">Cek Ketersediaan</a> <a href="#" class="btn btn-white">Cek Resi</a></p>
           </div>
         </div>
       </div>
@@ -26,7 +26,7 @@
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     @foreach ($errors->all() as $message)
                                         @if ($message == 'login_for_more_info')
-                                            <a href="{{ route('admin.login') }}">Masuk</a> untuk meilihat aktivitas peminjaman.
+                                            <a href="{{ route('admin.login') }}">Masuk</a> untuk melihat aktivitas peminjaman.
                                         @else
                                             {{ $message }}<br>
                                         @endif
@@ -128,7 +128,7 @@
 								</div>
 								<div class="col-md-12">
 									<div class="form-group">
-			              <input type="submit" value="Pinjam Ruang Sekarang" class="btn btn-primary py-3 px-4">
+			              <input type="submit" value="Ajukan Peminjaman" class="btn btn-primary py-3 px-4">
 			            </div>
 								</div>
 							</div>
