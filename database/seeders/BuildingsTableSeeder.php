@@ -17,7 +17,7 @@ class BuildingsTableSeeder extends Seeder
             0 =>
             array(
                 'id' => 1,
-                'name' => 'Testing',
+                'name' => 'Gedung 1',
                 'is_active' => 1,
                 'created_at' => '2021-08-04 22:52:24',
                 'updated_at' => '2021-08-04 22:52:24',

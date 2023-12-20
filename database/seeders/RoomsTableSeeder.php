@@ -19,7 +19,7 @@ class RoomsTableSeeder extends Seeder
             0 =>
             array(
                 'id' => 1,
-                'name' => '601',
+                'name' => 'Ruangan 1',
                 'max_people' => 20,
                 'status' => 0,
                 'notes' => NULL,
