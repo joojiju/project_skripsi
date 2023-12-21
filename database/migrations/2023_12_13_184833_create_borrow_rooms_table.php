@@ -19,13 +19,13 @@ return new class extends Migration
             $table->foreignId('inventory_id')->constrained();
             $table->dateTime('borrow_at');
             $table->dateTime('until_at');
-            $table->text('activty');
             $table->unsignedInteger('lecturer_id');
             $table->tinyInteger('lecturer_approval_status')->default(ApprovalStatus::Pending());
             $table->unsignedInteger('admin_id')->nullable();
             $table->tinyInteger('admin_approval_status')->nullable();
             $table->dateTime('processed_at')->nullable();
             $table->dateTime('returned_at')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

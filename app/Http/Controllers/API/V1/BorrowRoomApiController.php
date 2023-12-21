@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BorrowRoom;
 use App\Models\AdminUserDetail;
 use App\Models\Room;
+use App\Models\Inventory;
 use Carbon\Carbon;
 use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Http\Request;
@@ -31,6 +32,7 @@ class BorrowRoomApiController extends Controller
             'borrow_at' =>      'required|date|after_or_equal:' . now()->format('d-m-Y H:i'),
             'until_at' =>       'required|date|after_or_equal:borrow_at',
             'room' =>           'required',
+            'inventory' =>      'required',
             'lecturer' =>       'required',
             'nim' =>            'required|integer',
             'study_program' =>  'required',
@@ -46,6 +48,7 @@ class BorrowRoomApiController extends Controller
             'until_at.after_or_equal' =>    'Kolom tgl selesai harus berisi tanggal setelah atau sama dengan tgl mulai.',
 
             'room.required' =>      'Kolom ruangan wajib diisi.',
+            'inventory.required' => 'Kolom inventaris wajib diisi.',
             'lecturer.required' =>  'Kolom dosen wajib diisi.',
 
             'nim.required' =>   'Kolom nim wajib diisi.',

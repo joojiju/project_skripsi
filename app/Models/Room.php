@@ -27,6 +27,6 @@ class Room extends Model
 
     public function inventories()
     {
-        return $this->hasMany(BorrowRoom::class);
+        return $this->hasMany(Inventory::class, 'inventory_id');
     }
 }

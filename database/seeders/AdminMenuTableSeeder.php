@@ -31,7 +31,7 @@ class AdminMenuTableSeeder extends Seeder
             array(
                 'id' => 2,
                 'parent_id' => 0,
-                'order' => 10,
+                'order' => 11,
                 'title' => 'Admin',
                 'icon' => 'fa-tasks',
                 'uri' => '',
@@ -43,7 +43,7 @@ class AdminMenuTableSeeder extends Seeder
             array(
                 'id' => 3,
                 'parent_id' => 2,
-                'order' => 11,
+                'order' => 12,
                 'title' => 'Users',
                 'icon' => 'fa-users',
                 'uri' => 'auth/users',
@@ -55,7 +55,7 @@ class AdminMenuTableSeeder extends Seeder
             array(
                 'id' => 4,
                 'parent_id' => 2,
-                'order' => 12,
+                'order' => 13,
                 'title' => 'Roles',
                 'icon' => 'fa-user',
                 'uri' => 'auth/roles',
@@ -67,7 +67,7 @@ class AdminMenuTableSeeder extends Seeder
             array(
                 'id' => 5,
                 'parent_id' => 2,
-                'order' => 13,
+                'order' => 14,
                 'title' => 'Permission',
                 'icon' => 'fa-ban',
                 'uri' => 'auth/permissions',
@@ -79,7 +79,7 @@ class AdminMenuTableSeeder extends Seeder
             array(
                 'id' => 6,
                 'parent_id' => 2,
-                'order' => 14,
+                'order' => 15,
                 'title' => 'Menu',
                 'icon' => 'fa-bars',
                 'uri' => 'auth/menu',
@@ -91,7 +91,7 @@ class AdminMenuTableSeeder extends Seeder
             array(
                 'id' => 7,
                 'parent_id' => 2,
-                'order' => 15,
+                'order' => 16,
                 'title' => 'Operation log',
                 'icon' => 'fa-history',
                 'uri' => 'auth/logs',
@@ -103,7 +103,7 @@ class AdminMenuTableSeeder extends Seeder
             array(
                 'id' => 8,
                 'parent_id' => 0,
-                'order' => 5,
+                'order' => 6,
                 'title' => 'Helpers',
                 'icon' => 'fa-gears',
                 'uri' => '',
@@ -115,7 +115,7 @@ class AdminMenuTableSeeder extends Seeder
             array(
                 'id' => 9,
                 'parent_id' => 8,
-                'order' => 6,
+                'order' => 7,
                 'title' => 'Scaffold',
                 'icon' => 'fa-keyboard-o',
                 'uri' => 'helpers/scaffold',
@@ -127,7 +127,7 @@ class AdminMenuTableSeeder extends Seeder
             array(
                 'id' => 10,
                 'parent_id' => 8,
-                'order' => 7,
+                'order' => 8,
                 'title' => 'Database terminal',
                 'icon' => 'fa-database',
                 'uri' => 'helpers/terminal/database',
@@ -139,7 +139,7 @@ class AdminMenuTableSeeder extends Seeder
             array(
                 'id' => 11,
                 'parent_id' => 8,
-                'order' => 8,
+                'order' => 9,
                 'title' => 'Laravel artisan',
                 'icon' => 'fa-terminal',
                 'uri' => 'helpers/terminal/artisan',
@@ -151,7 +151,7 @@ class AdminMenuTableSeeder extends Seeder
             array(
                 'id' => 12,
                 'parent_id' => 8,
-                'order' => 9,
+                'order' => 10,
                 'title' => 'Routes',
                 'icon' => 'fa-list-alt',
                 'uri' => 'helpers/routes',
@@ -164,7 +164,7 @@ class AdminMenuTableSeeder extends Seeder
                 'id' => 13,
                 'parent_id' => 0,
                 'order' => 2,
-                'title' => 'Tipe Ruangan',
+                'title' => 'Gedung',
                 'icon' => 'fa-cubes',
                 'uri' => 'buildings',
                 'permission' => 'list.buildings',
@@ -188,6 +188,18 @@ class AdminMenuTableSeeder extends Seeder
                 'id' => 15,
                 'parent_id' => 0,
                 'order' => 4,
+                'title' => 'Inventaris',
+                'icon' => 'fa-trello',
+                'uri' => 'inventories',
+                'permission' => 'list.rooms',
+                'created_at' => '2021-08-04 22:22:06',
+                'updated_at' => '2021-08-12 02:18:21',
+            ),
+            15 =>
+            array(
+                'id' => 16,
+                'parent_id' => 0,
+                'order' => 5,
                 'title' => 'Pinjam Ruang',
                 'icon' => 'fa-calendar',
                 'uri' => 'borrow-rooms',

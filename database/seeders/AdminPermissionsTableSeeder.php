@@ -199,6 +199,46 @@ class AdminPermissionsTableSeeder extends Seeder
                 'created_at' => '2021-08-12 02:14:35',
                 'updated_at' => '2021-08-12 02:14:35',
             ),
+            18 =>
+            array(
+                'id' => 20,
+                'name' => 'List Inventories',
+                'slug' => 'list.inventories',
+                'http_method' => 'GET',
+                'http_path' => '/inventories*',
+                'created_at' => '2021-08-12 02:11:31',
+                'updated_at' => '2021-08-12 02:11:31',
+            ),
+            19 =>
+            array(
+                'id' => 21,
+                'name' => 'Create Inventories',
+                'slug' => 'create.inventories',
+                'http_method' => 'POST',
+                'http_path' => '/inventories*',
+                'created_at' => '2021-08-12 02:11:55',
+                'updated_at' => '2021-08-12 02:11:55',
+            ),
+            20 =>
+            array(
+                'id' => 22,
+                'name' => 'Edit Inventories',
+                'slug' => 'edit.inventories',
+                'http_method' => 'PUT',
+                'http_path' => '/inventories/*',
+                'created_at' => '2021-08-12 02:12:23',
+                'updated_at' => '2021-08-12 02:12:23',
+            ),
+            13 =>
+            array(
+                'id' => 23,
+                'name' => 'Delete Inventories',
+                'slug' => 'delete.inventories',
+                'http_method' => 'DELETE',
+                'http_path' => '/inventories/*',
+                'created_at' => '2021-08-12 02:12:40',
+                'updated_at' => '2021-08-12 02:12:40',
+            ),
         );
 
         // Checking if the table already have a query

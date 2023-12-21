@@ -2,17 +2,17 @@
 
 namespace App\Admin\Controllers;
 
-use App\Enums\RoomStatus;
-use App\Models\Room;
+use App\Enums\InventoryStatus;
+use App\Models\Inventory;
 use App\Http\Controllers\Controller;
-use App\Models\Building;
+use App\Models\Room;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class RoomController extends Controller
+class InventoryController extends Controller
 {
     use HasResourceActions;
 
@@ -25,7 +25,7 @@ class RoomController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Ruangan')
+            ->header('Inventaris')
             ->description(trans('admin.list'))
             ->body($this->grid());
     }
@@ -40,7 +40,7 @@ class RoomController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Ruangan')
+            ->header('Inventaris')
             ->description(trans('admin.show'))
             ->body($this->detail($id));
     }
@@ -55,7 +55,7 @@ class RoomController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Ruangan')
+            ->header('Inventaris')
             ->description(trans('admin.edit'))
             ->body($this->form()->edit($id));
     }
@@ -69,7 +69,7 @@ class RoomController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('Ruangan')
+            ->header('Inventaris')
             ->description(trans('admin.create'))
             ->body($this->form());
     }
@@ -81,14 +81,14 @@ class RoomController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new Room);
+        $grid = new Grid(new Inventory);
 
         $grid->id('ID');
-
         $grid->column('name', 'Nama');
-        $grid->column('building.name', 'Gedung');
-        $grid->column('max_people', 'Maks Orang');
-        $grid->column('room_status', 'Status Ruangan')->display(function ($value) {
+        $grid->column('type', 'Tipe/Merk');
+        $grid->column('quantity', 'Jumlah');
+        $grid->column('room.name', 'Ruangan');
+        $grid->column('inventory_status', 'Status Inventaris')->display(function ($value) {
             $val = ['info', 'Kosong'];
             foreach ($this->borrow_rooms as $borrow_room) {
                 $lecturer_approval_status = $borrow_room->lecturer_approval_status;
@@ -101,7 +101,7 @@ class RoomController extends Controller
                         if ($returned_at != null)
                             $val = ['success', 'Peminjaman selesai'];
                         else if ($processed_at != null)
-                            $val = ['success', 'Ruangan sedang digunakan'];
+                            $val = ['success', 'Inventaris sedang digunakan'];
                         else
                             $val = ['success', 'Sudah disetujui TU'];
                     } else if ($admin_approval_status == 0)
@@ -116,21 +116,21 @@ class RoomController extends Controller
         });
 
         // Role & Permission
-        if (!\Admin::user()->can('create.rooms'))
+        if (!\Admin::user()->can('create.inventories'))
             $grid->disableCreateButton();
 
         $grid->actions(function ($actions) {
 
             // The roles with this permission will not able to see the view button in actions column.
-            if (!\Admin::user()->can('edit.rooms')) {
+            if (!\Admin::user()->can('edit.inventories')) {
                 $actions->disableEdit();
             }
             // The roles with this permission will not able to see the show button in actions column.
-            if (!\Admin::user()->can('list.rooms')) {
+            if (!\Admin::user()->can('list.inventories')) {
                 $actions->disableView();
             }
             // The roles with this permission will not able to see the delete button in actions column.
-            if (!\Admin::user()->can('delete.rooms')) {
+            if (!\Admin::user()->can('delete.inventories')) {
                 $actions->disableDelete();
             }
         });
@@ -146,13 +146,14 @@ class RoomController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(Room::findOrFail($id));
+        $show = new Show(Inventory::findOrFail($id));
 
         $show->id('ID');
         $show->field('name', 'Nama');
-        $show->field('building.name', 'Gedung');
-        $show->field('max_people', 'Maks Orang');
-        $show->field('status', 'Status')->using(RoomStatus::asSelectArray());
+        $show->field('type', 'Tipe/Merk');
+        $show->field('room.name', 'Ruangan');
+        $show->field('quantity', 'Jumlah');
+        $show->field('status', 'Status')->using(InventoryStatus::asSelectArray());
         $show->field('notes', 'Catatan');
         $show->created_at(trans('admin.created_at'));
         $show->updated_at(trans('admin.updated_at'));
@@ -161,15 +162,15 @@ class RoomController extends Controller
         $show->panel()
             ->tools(function ($tools) {
                 // The roles with this permission will not able to see the view button in actions column.
-                if (!\Admin::user()->can('edit.rooms'))
+                if (!\Admin::user()->can('edit.inventories'))
                     $tools->disableEdit();
 
                 // The roles with this permission will not able to see the show button in actions column.
-                if (!\Admin::user()->can('list.rooms'))
+                if (!\Admin::user()->can('list.inventories'))
                     $tools->disableList();
 
                 // The roles with this permission will not able to see the delete button in actions column.
-                if (!\Admin::user()->can('delete.rooms'))
+                if (!\Admin::user()->can('delete.inventories'))
                     $tools->disableDelete();
             });
 
@@ -183,22 +184,23 @@ class RoomController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new Room);
+        $form = new Form(new Inventory);
 
         if ($form->isEditing())
             $form->display('id', 'ID');
 
         $form->text('name', 'Nama');
-        $form->select('building_id', 'Gedung')->options(function ($id) {
-            return Building::all()->pluck('name', 'id');
+        $form->select('room_id', 'Ruangan')->options(function ($id) {
+            return Room::all()->pluck('name', 'id');
         });
-        $form->slider('max_people', 'Maksimal Orang')->options([
+        $form->text('type', 'Tipe/Merk');
+        $form->slider('quantity', 'Jumlah')->options([
             'min' => 1,
             'max' => 100,
             'from' => 20,
-            'postfix' => ' orang'
+            'postfix' => ' buah'
         ]);
-        $form->radio('status', 'Status')->options(RoomStatus::asSelectArray())->stacked();
+        $form->radio('status', 'Status')->options(InventoryStatus::asSelectArray())->stacked();
         $form->textarea('notes', 'Catatan');
 
         if ($form->isEditing()) {

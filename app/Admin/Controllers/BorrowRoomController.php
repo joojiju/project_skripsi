@@ -99,6 +99,7 @@ class BorrowRoomController extends Controller
         $grid->id('ID');
         $grid->column('borrower.name', 'Peminjam');
         $grid->column('room.name', 'Ruangan');
+        $grid->column('inventory.name', 'Inventaris');
         $grid->column('borrow_at', 'Mulai Pinjam')->display(function ($borrow_at) {
             return Carbon::parse($borrow_at)->format('d M Y H:i');
         });
@@ -173,6 +174,7 @@ class BorrowRoomController extends Controller
         $show->id('ID');
         $show->field('borrower.name', 'Peminjam');
         $show->field('room.name', 'Ruangan');
+        $show->field('inventory.name', 'Inventaris');
         $show->field('borrow_at', 'Mulai Pinjam');
         $show->field('until_at', 'Selesai Pinjam');
         $show->field('lecturer.name', 'Dosen');
@@ -223,6 +225,7 @@ class BorrowRoomController extends Controller
         if ($isDosen) {
             $form->display('borrower.name', 'Peminjam');
             $form->display('room.name', 'Ruangan');
+            $form->display('inventory.name', 'Inventaris');
             $form->display('borrow_at', 'Lama Pinjam')->with(function () {
                 $borrow_at = Carbon::parse($this->borrow_at);
                 $until_at = Carbon::parse($this->until_at);
@@ -236,6 +239,7 @@ class BorrowRoomController extends Controller
         } else if ($isTatausaha) {
             $form->display('borrower.name', 'Peminjam');
             $form->display('room.name', 'Ruangan');
+            $form->display('inventory.name', 'Inventaris');
             $form->display('borrow_at', 'Lama Pinjam')->with(function () {
                 $borrow_at = Carbon::parse($this->borrow_at);
                 $until_at = Carbon::parse($this->until_at);

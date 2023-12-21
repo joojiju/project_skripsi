@@ -2,6 +2,7 @@
 
 use App\Admin\Controllers\API\V1\AdministratorApiController;
 use App\Admin\Controllers\API\V1\RoomApiController;
+use App\Admin\Controllers\API\V1\InventoryApiController;
 use Illuminate\Routing\Router;
 
 Admin::routes();
@@ -17,6 +18,7 @@ Route::group([
 
     $router->resource('buildings', RoomTypeController::class);
     $router->resource('rooms', RoomController::class);
+    $router->resource('inventories', InventoryController::class);
     $router->resource('borrow-rooms', BorrowRoomController::class);
 
     $router->group(['prefix' => 'api'], function (Router $router) {
@@ -27,5 +29,8 @@ Route::group([
 
         // RoomApiController
         $router->get('rooms', [RoomApiController::class, 'getRooms']);
+
+        // InventoryApiController
+        $router->get('inventories', [InventoryApiController::class, 'getInventories']);
     });
 });
