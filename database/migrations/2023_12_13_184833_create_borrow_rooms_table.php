@@ -15,6 +15,11 @@ return new class extends Migration
         Schema::create('borrow_rooms', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('borrower_id');
+            $table->string('email');
+            $table->string('full_name');
+            $table->integer('phone_number');
+            $table->string('status_peminjam');
+            $table->string('activity');
             $table->foreignId('room_id')->constrained();
             $table->foreignId('inventory_id')->constrained();
             $table->dateTime('borrow_at');

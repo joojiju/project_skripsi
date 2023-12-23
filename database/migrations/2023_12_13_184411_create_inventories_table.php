@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('type');
-            $table->integer('quantity')->nullable();
+            $table->integer('quantity');
             $table->tinyInteger('status')->default(0);
             $table->text('notes')->nullable();
             $table->foreignId('room_id')->constrained();

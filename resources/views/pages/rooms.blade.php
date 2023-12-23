@@ -133,7 +133,7 @@
                             <div class="form-group">
                             <div class="form-field">
                           <div class="select-wrap">
-                  <select name="study_program" id="" class="form-control">
+                  <select name="status_peminjam" id="" class="form-control">
                       <option value="" selected disabled>Prodi</option>
                       <option value="teknik-informatika">Teknik Informatika (D3)</option>
                       <option value="teknik-multimedia-dan-jaringan">Teknik Multimedia & Jaringan (D4)</option>
@@ -184,7 +184,7 @@
                 $('#borrowRoomModal').find('input[name="until_at"]').val('');
                 $('#borrowRoomModal').find('select[name="lecturer"]').val($('select[name="lecturer"] option:first').val());
                 $('#borrowRoomModal').find('input[name="nim"]').val('');
-                $('#borrowRoomModal').find('select[name="study_program"]').val($('select[name="study_program"] option:first').val());
+                $('#borrowRoomModal').find('select[name="status_peminjam"]').val($('select[name="status_peminjam"] option:first').val());
             }
         </script>
     @endsection

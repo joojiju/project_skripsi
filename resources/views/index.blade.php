@@ -129,7 +129,7 @@
 	                                <div class="icon"><span class="fa fa-chevron-down"></span></div>
 	                                <select name="inventory" id="" class="form-control">
 	                      	        <option value="" selected disabled>Pilih Inventaris</option>
-                                    @forelse ($data['inventories'] as $inventories)
+                                    @forelse ($data['inventories'] as $inventory)
                                     <option value="{{ $inventory->id }}" @if(old('inventory') == $inventory->id) selected @endif>
                                     {{ $inventory->name }}
                                     </option>

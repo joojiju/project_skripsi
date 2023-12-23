@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('max_people')->nullable();
+            $table->integer('max_people');
             $table->tinyInteger('status')->default(0);
             $table->text('notes')->nullable();
             $table->foreignId('building_id')->constrained();

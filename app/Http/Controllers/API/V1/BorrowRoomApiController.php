@@ -18,26 +18,35 @@ class BorrowRoomApiController extends Controller
     public function storeBorrowRoomWithCollegeStudent(Request $request)
     {
         // Set request to variable
+        $email =            $request->email;
         $full_name =        \Str::upper($request->full_name);
-        $nim =              $request->nim;
-        $study_program =    $request->study_program;
+        $phone_number =     $request->phone_number;
+        $status_peminjam =  $request->status_peminjam;
+        $activity =         $request->activity;
         $data =             json_encode([
-            'full_name' =>      $full_name,
-            'nim'       =>      $nim,
-            'study_program' =>  $study_program,
+            'email' =>              $email,
+            'full_name' =>          $full_name,
+            'phone_number' =>       $phone_number,
+            'status_peminjam' =>    $status_peminjam,
+            'activity' =>           $activity,
         ], true);
 
         $validator = Validator::make($request->all(), [
-            'full_name' =>      'required|string',
-            'borrow_at' =>      'required|date|after_or_equal:' . now()->format('d-m-Y H:i'),
-            'until_at' =>       'required|date|after_or_equal:borrow_at',
-            'room' =>           'required',
-            'inventory' =>      'required',
-            'lecturer' =>       'required',
-            'nim' =>            'required|integer',
-            'study_program' =>  'required',
+            'email' =>              'required|string',
+            'full_name' =>          'required|string',
+            'phone_number' =>       'required|integer',
+            'status_peminjam' =>    'required',
+            'activity' =>           'required|string',
+            'borrow_at' =>          'required|date|after_or_equal:' . now()->format('d-m-Y H:i'),
+            'until_at' =>           'required|date|after_or_equal:borrow_at',
+            'room' =>               'required',
+            'inventory' =>          'required',
         ], [
-            'full_name.required' => 'Kolom nama lengkap wajib diisi.',
+            'email.required' =>             'Kolom email wajib diisi.',
+            'full_name.required' =>         'Kolom nama lengkap wajib diisi.',
+            'phone_number.required' =>      'Kolom nomor telepon wajib diisi.',
+            'phone_number.integer' =>       'Kolom nomor telepon harus berupa nomor.',
+            'activity.required' =>          'Kolom aktivitas wajib diisi.',
 
             'borrow_at.required' =>         'Kolom tgl mulai wajib diisi.',
             'borrow_at.date' =>             'Kolom tgl mulai bukan tanggal yang valid.',
@@ -49,25 +58,21 @@ class BorrowRoomApiController extends Controller
 
             'room.required' =>      'Kolom ruangan wajib diisi.',
             'inventory.required' => 'Kolom inventaris wajib diisi.',
-            'lecturer.required' =>  'Kolom dosen wajib diisi.',
 
-            'nim.required' =>   'Kolom nim wajib diisi.',
-            'nim.integer' =>    'Kolom nim harus berupa bilangan bulat.',
-
-            'study_program.required' => 'Kolom prodi wajib diisi.',
+            'status_peminjam.required' => 'Kolom status wajib diisi.',
         ]);
 
         if ($validator->fails())
             return redirect(route('home'))->withInput($request->input())->withErrors($validator);
 
         // Check if admin_user (college student) is exist
-        $admin_user = Administrator::where('username', $nim)->first();
+        $admin_user = Administrator::where('username', $email)->first();
         if ($admin_user === null) {
             // Make account for college student
             $admin_user = Administrator::create([
-                'username' =>   $nim,
+                'username' =>   $email,
                 'name' =>       $full_name,
-                'password' =>   Hash::make($request->nim)
+                'password' =>   Hash::make($request->phone_number)
             ]);
 
             // Add role college student
@@ -109,13 +114,18 @@ class BorrowRoomApiController extends Controller
 
             if (!$borrow_rooms_is_not_finished)
                 return redirect(route('home'))->withInput($request->input())->withErrors([
-                    'Mahasiswa dengan NIM ' . $admin_user->username . ' masih memiliki peminjaman yang belum selesai.',
+                    'Peminjam dengan email ' . $admin_user->username . ' masih memiliki peminjaman yang belum selesai.',
                     'login_for_more_info', //
                 ]);
         }
 
         // Add borrow rooms
         $borrow_room = BorrowRoom::create([
+            'email' =>              $email,
+            'full_name' =>          $full_name,
+            'phone_number' =>       $phone_number,
+            'status_peminjam' =>    $status_peminjam,
+            'activity' =>           $activity,
             'borrower_id' =>        $admin_user->id,
             'room_id' =>            $request->room,
             'inventory_id' =>       $request->inventory,
