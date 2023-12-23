@@ -97,7 +97,11 @@ class BorrowRoomController extends Controller
             $grid->model()->whereIn('lecturer_approval_status', [ApprovalStatus::Disetujui(), ApprovalStatus::Ditolak()]);
 
         $grid->id('ID');
-        $grid->column('borrower.name', 'Peminjam');
+        $grid->column('full_name', 'Peminjam');
+        $grid->column('status_peminjam', 'Status Peminjam');
+        $grid->column('email', 'Email');
+        $grid->column('phone_number', 'Nomor Telepon');
+        $grid->column('activity', 'Kegiatan');
         $grid->column('room.name', 'Ruangan');
         $grid->column('inventory.name', 'Inventaris');
         $grid->column('borrow_at', 'Mulai Pinjam')->display(function ($borrow_at) {

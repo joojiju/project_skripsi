@@ -89,7 +89,7 @@ class InventoryController extends Controller
         $grid->column('quantity', 'Jumlah');
         $grid->column('room.name', 'Ruangan');
         $grid->column('inventory_status', 'Status Inventaris')->display(function ($value) {
-            $val = ['info', 'Kosong'];
+            $val = ['info', 'Tersedia'];
             foreach ($this->borrow_rooms as $borrow_room) {
                 $lecturer_approval_status = $borrow_room->lecturer_approval_status;
                 $admin_approval_status =    $borrow_room->admin_approval_status;

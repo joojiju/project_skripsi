@@ -20,6 +20,11 @@ class BorrowRoom extends Model
      */
     protected $fillable = [
         'borrower_id',
+        'email',
+        'full_name',
+        'phone_number',
+        'status_peminjam',
+        'activity',
         'room_id',
         'inventory_id',
         'borrow_at',

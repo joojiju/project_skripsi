@@ -89,7 +89,7 @@ class RoomController extends Controller
         $grid->column('building.name', 'Gedung');
         $grid->column('max_people', 'Maks Orang');
         $grid->column('room_status', 'Status Ruangan')->display(function ($value) {
-            $val = ['info', 'Kosong'];
+            $val = ['info', 'Tersedia'];
             foreach ($this->borrow_rooms as $borrow_room) {
                 $lecturer_approval_status = $borrow_room->lecturer_approval_status;
                 $admin_approval_status =    $borrow_room->admin_approval_status;
