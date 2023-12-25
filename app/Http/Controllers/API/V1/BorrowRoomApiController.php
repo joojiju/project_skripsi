@@ -131,7 +131,6 @@ class BorrowRoomApiController extends Controller
             'inventory_id' =>       $request->inventory,
             'borrow_at' =>          Carbon::make($request->borrow_at),
             'until_at' =>           Carbon::make($request->until_at),
-            'lecturer_id' =>        $request->lecturer,
         ]);
 
         // Return success create borrow_rooms

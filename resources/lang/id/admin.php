@@ -37,7 +37,7 @@ return [
     'show'                  => 'Perlihatkan',
     'entries'               => 'Masukan',
     'captcha'               => 'Captcha',
-    'action'                => 'Aksi',
+    'action'                => ' ',
     'title'                 => 'Judul',
     'description'           => 'Deskripsi',
     'back'                  => 'Kembali',

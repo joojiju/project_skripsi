@@ -91,12 +91,10 @@ class RoomController extends Controller
         $grid->column('room_status', 'Status Ruangan')->display(function ($value) {
             $val = ['info', 'Tersedia'];
             foreach ($this->borrow_rooms as $borrow_room) {
-                $lecturer_approval_status = $borrow_room->lecturer_approval_status;
                 $admin_approval_status =    $borrow_room->admin_approval_status;
                 $returned_at =              $borrow_room->returned_at ?? null;
                 $processed_at =             $borrow_room->processed_at ?? null;
 
-                if ($lecturer_approval_status == 1) {
                     if ($admin_approval_status == 1) {
                         if ($returned_at != null)
                             $val = ['success', 'Peminjaman selesai'];
@@ -106,10 +104,8 @@ class RoomController extends Controller
                             $val = ['success', 'Sudah disetujui TU'];
                     } else if ($admin_approval_status == 0)
                         $val = ['info', 'Menunggu persetujuan TU'];
-                } else if ($lecturer_approval_status == 0) {
-                    $val = ['info', 'Menunggu persetujuan Dosen'];
-                }
             }
+
             // return 'wkwk';
             return '<span class="label-' . $val[0] . '" style="width: 8px;height: 8px;padding: 0;border-radius: 50%;display: inline-block;"></span>&nbsp;&nbsp;'
                 . $val[1];

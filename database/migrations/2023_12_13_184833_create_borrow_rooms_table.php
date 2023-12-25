@@ -24,8 +24,6 @@ return new class extends Migration
             $table->foreignId('inventory_id')->constrained();
             $table->dateTime('borrow_at');
             $table->dateTime('until_at');
-            $table->unsignedInteger('lecturer_id');
-            $table->tinyInteger('lecturer_approval_status')->default(ApprovalStatus::Pending());
             $table->unsignedInteger('admin_id')->nullable();
             $table->tinyInteger('admin_approval_status')->nullable();
             $table->dateTime('processed_at')->nullable();
@@ -35,10 +33,6 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->foreign('borrower_id')
-                ->references('id')->on('admin_users')
-                ->onUpdate('CASCADE')
-                ->onDelete('RESTRICT');
-            $table->foreign('lecturer_id')
                 ->references('id')->on('admin_users')
                 ->onUpdate('CASCADE')
                 ->onDelete('RESTRICT');

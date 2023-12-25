@@ -26,21 +26,6 @@ class AdministratorApiController extends Controller
     }
 
     /**
-     * Get all administrator where has role `dosen`
-     *
-     * @param  mixed $request
-     * @return void
-     */
-    public function getLecturers(Request $request)
-    {
-        $q = $request->get('q');
-
-        return Administrator::whereHas('roles', function ($query) {
-            $query->where('slug', 'dosen');
-        })->where('name', 'like', "%$q%")->paginate(null, ['id', 'name as text']);
-    }
-
-    /**
      * Get all administrator where has role `tata-usaha`
      *
      * @param  mixed $request

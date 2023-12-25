@@ -29,8 +29,6 @@ class BorrowRoom extends Model
         'inventory_id',
         'borrow_at',
         'until_at',
-        'lecturer_id',
-        'lecturer_approval_status',
         'admin_id',
         'admin_approval_status',
         'processed_at',
@@ -63,11 +61,6 @@ class BorrowRoom extends Model
         return $this->belongsTo(Administrator::class);
     }
 
-    public function lecturer()
-    {
-        return $this->belongsTo(Administrator::class);
-    }
-
     public function admin()
     {
         return $this->belongsTo(Administrator::class);
@@ -79,12 +72,12 @@ class BorrowRoom extends Model
      */
     public function scopeIsNotFinished($query)
     {
-        return $query->where('lecturer_approval_status', '!=', 2)->where('returned_at', '=', null);
+        return $query->where('admin_approval_status', '!=', 2)->where('returned_at', '=', null);
     }
 
-    public function scopeIsLecturerApproved($query)
+    public function scopeIsAdminApproved($query)
     {
-        return $query->where('lecturer_approval_status', '=', ApprovalStatus::Disetujui());
+        return $query->where('Admin_approval_status', '=', ApprovalStatus::Disetujui());
     }
 
     /**
