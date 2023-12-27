@@ -18,28 +18,35 @@ class HomeController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->title('Dashboard')
+            ->title('<b>DASHBOARD</b>')
             ->description('SIPRIG')
             ->row(function (Row $row) {
                 // Widget for users
                 $row->column(3, function (Column $column) {
                     $count_users = \DB::table('admin_users')->count();
-                    $infoBox = new InfoBox('Pengguna', 'users', 'aqua', route('admin.auth.users.index'), $count_users);
+                    $infoBox = new InfoBox('Pengguna', 'users', 'blue', route('admin.auth.users.index'), $count_users);
                     $column->append($infoBox);
                 });
 
                 // Widget for buildings
                 $row->column(3, function (Column $column) {
                     $count_buildings = \DB::table('buildings')->count();
-                    $infoBox = new InfoBox('Bangunan', 'cubes', 'green', route('admin.buildings.index'), $count_buildings);
+                    $infoBox = new InfoBox('Bangunan', 'building', 'orange', route('admin.buildings.index'), $count_buildings);
                     $column->append($infoBox);
                 });
 
                 // Widget for rooms
                 $row->column(3, function (Column $column) {
                     $count_rooms = \DB::table('rooms')->count();
-                    $infoBox = new InfoBox('Ruangan', 'trello', 'yellow', route('admin.rooms.index'), $count_rooms);
-                    $column->append($infoBox);
+                    $infoBox = new InfoBox('Ruangan', 'building', 'yellow', route('admin.rooms.index'), $count_rooms);
+                    $column->append($infoBox);                 
+                });
+
+                // Widget for inventories
+                $row->column(3, function (Column $column) {
+                    $count_inventories = \DB::table('inventories')->count();
+                    $infoBox = new InfoBox('Inventaris', 'suitcase', 'green', route('admin.inventories.index'), $count_inventories);
+                    $column->append($infoBox);                 
                 });
 
                 // Widget for borrow rooms

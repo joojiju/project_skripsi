@@ -31,9 +31,9 @@ class AdminRolesTableSeeder extends Seeder
                 'created_at' => '2021-08-04 22:39:30',
                 'updated_at' => '2021-08-04 22:39:30',
             ),
-            3 =>
+            2 =>
             array(
-                'id' => 4,
+                'id' => 3,
                 'name' => 'Peminjam',
                 'slug' => 'peminjam',
                 'created_at' => '2021-08-04 22:42:04',

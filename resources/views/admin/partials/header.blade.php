@@ -4,9 +4,9 @@
     <!-- Logo -->
     <a href="{{ admin_url('/') }}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini">{!! config('admin.logo-mini', config('admin.name')) !!}</span>
+        <span class="logo-mini"></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg">"SIPRIG"</span>
+        <span class="logo-lg"><b>SIPRIG GKJP</b></span>
     </a>
 
     <!-- Header Navbar -->

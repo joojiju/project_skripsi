@@ -77,7 +77,7 @@ class BorrowRoomApiController extends Controller
 
             // Add role college student
             $admin_role_user = \DB::table('admin_role_users')->insert([
-                'role_id' =>    4,
+                'role_id' =>    3,
                 'user_id' =>    $admin_user->id,
             ]);
 

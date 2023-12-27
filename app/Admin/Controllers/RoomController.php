@@ -25,7 +25,7 @@ class RoomController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Ruangan')
+            ->header('<b>RUANGAN</b>')
             ->description(trans('admin.list'))
             ->body($this->grid());
     }
@@ -40,7 +40,7 @@ class RoomController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Ruangan')
+            ->header('<b>RUANGAN</b>')
             ->description(trans('admin.show'))
             ->body($this->detail($id));
     }
@@ -55,7 +55,7 @@ class RoomController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Ruangan')
+            ->header('<b>RUANGAN</b>')
             ->description(trans('admin.edit'))
             ->body($this->form()->edit($id));
     }
@@ -69,7 +69,7 @@ class RoomController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('Ruangan')
+            ->header('<b>RUANGAN</b>')
             ->description(trans('admin.create'))
             ->body($this->form());
     }

@@ -11,7 +11,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class RoomTypeController extends Controller
+class BuildingController extends Controller
 {
     use HasResourceActions;
 
@@ -24,7 +24,7 @@ class RoomTypeController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Gedung')
+            ->header('<b>GEDUNG</b>')
             ->description(trans('admin.list'))
             ->body($this->grid());
     }
@@ -39,7 +39,7 @@ class RoomTypeController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Gedung')
+            ->header('<b>GEDUNG</b>')
             ->description(trans('admin.show'))
             ->body($this->detail($id));
     }
@@ -54,7 +54,7 @@ class RoomTypeController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Gedung')
+            ->header('<b>GEDUNG</b>')
             ->description(trans('admin.edit'))
             ->body($this->form()->edit($id));
     }
@@ -68,7 +68,7 @@ class RoomTypeController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('Gedung')
+            ->header('<b>GEDUNG</b>')
             ->description(trans('admin.create'))
             ->body($this->form());
     }

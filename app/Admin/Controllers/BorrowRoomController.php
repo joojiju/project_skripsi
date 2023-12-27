@@ -29,7 +29,7 @@ class BorrowRoomController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('SIPRIG')
+            ->header('<b>PEMINJAMAN</b>')
             ->description(trans('admin.list'))
             ->body($this->grid());
     }
@@ -44,7 +44,7 @@ class BorrowRoomController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('SIPRIG')
+            ->header('<b>PEMINJAMAN</b>')
             ->description(trans('admin.show'))
             ->body($this->detail($id));
     }
@@ -59,7 +59,7 @@ class BorrowRoomController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('SIPRIG')
+            ->header('<b>PEMINJAMAN</b>')
             ->description(trans('admin.edit'))
             ->body($this->form()->edit($id));
     }
@@ -73,7 +73,7 @@ class BorrowRoomController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('SIPRIG')
+            ->header('<b>PEMINJAMAN</b>')
             ->description(trans('admin.create'))
             ->body($this->form());
     }
@@ -209,8 +209,7 @@ class BorrowRoomController extends Controller
     {
         $form = new Form(new BorrowRoom);
         $admin_user = \Admin::user();
-        $isDosen = $admin_user->isRole('dosen');
-        $isTatausaha = $admin_user->isRole('komisi-rumah-tangga');
+        $isKomisirumahtangga = $admin_user->isRole('komisi-rumah-tangga');
 
         if ($form->isEditing())
             $form->display('id', 'ID');
@@ -234,7 +233,7 @@ class BorrowRoomController extends Controller
                 else
                     return $count_days . ' hari (' . $borrow_at->format('d M Y') . ' s/d ' . $until_at->format('d M Y') . ')';
             });
-        } else if ($isTatausaha) {
+        } else if ($isKomisirumahtangga) {
             $form->display('full_name', 'Peminjam');
             $form->display('status_peminjam', 'Status Peminjam');
             $form->display('email', 'Email');
@@ -269,7 +268,7 @@ class BorrowRoomController extends Controller
 
         // BATAS
 
-        if ($isTatausaha) {
+        if ($isKomisirumahtangga) {
             $form->display('created_at', 'Diajukan pada')->with(function () {
                 return Carbon::parse($this->created_at)->format('d M Y');
             });

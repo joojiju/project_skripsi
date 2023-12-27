@@ -16,7 +16,7 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
 
-    $router->resource('buildings', RoomTypeController::class);
+    $router->resource('buildings', BuildingController::class);
     $router->resource('rooms', RoomController::class);
     $router->resource('inventories', InventoryController::class);
     $router->resource('borrow-rooms', BorrowRoomController::class);
