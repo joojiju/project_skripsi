@@ -26,24 +26,16 @@ class AdminRolesTableSeeder extends Seeder
             1 =>
             array(
                 'id' => 2,
-                'name' => 'Tata Usaha',
-                'slug' => 'tata-usaha',
+                'name' => 'Komisi Rumah Tangga',
+                'slug' => 'komisi-rumah-tangga',
                 'created_at' => '2021-08-04 22:39:30',
                 'updated_at' => '2021-08-04 22:39:30',
-            ),
-            2 =>
-            array(
-                'id' => 3,
-                'name' => 'Dosen',
-                'slug' => 'dosen',
-                'created_at' => '2021-08-04 22:39:37',
-                'updated_at' => '2021-08-04 22:39:37',
             ),
             3 =>
             array(
                 'id' => 4,
-                'name' => 'Mahasiswa',
-                'slug' => 'mahasiswa',
+                'name' => 'Peminjam',
+                'slug' => 'peminjam',
                 'created_at' => '2021-08-04 22:42:04',
                 'updated_at' => '2021-08-04 22:42:04',
             ),

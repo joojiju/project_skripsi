@@ -89,9 +89,9 @@ class BorrowRoomController extends Controller
 
         $admin_user = \Admin::user();
         // Show query only related to roles
-        if ($admin_user->isRole('mahasiswa'))
+        if ($admin_user->isRole('peminjam'))
             $grid->model()->where('borrower_id', $admin_user->id);
-        else if ($admin_user->isRole('tata-usaha'))
+        else if ($admin_user->isRole('komisi-rumah-tangga'))
             $grid->model()->whereIn('admin_approval_status', [ApprovalStatus::Disetujui(), ApprovalStatus::Ditolak()]);
 
         $grid->id('ID');
@@ -173,8 +173,8 @@ class BorrowRoomController extends Controller
         $show->field('inventory.name', 'Inventaris');
         $show->field('borrow_at', 'Mulai Pinjam');
         $show->field('until_at', 'Selesai Pinjam');
-        $show->field('admin.name', ' Tata Usaha');
-        $show->field('admin_approval_status', 'Status Persetujuan Tata Usaha')->using(ApprovalStatus::asSelectArray());;
+        $show->field('admin.name', ' Komisi Rumah Tangga');
+        $show->field('admin_approval_status', 'Status Persetujuan Komisi Rumah Tangga')->using(ApprovalStatus::asSelectArray());;
         $show->field('processed_at', 'Kunci Diambil Pada');
         $show->field('returned_at', 'Diselesaikan Pada');
         $show->field('notes', 'Catatan');
@@ -210,12 +210,12 @@ class BorrowRoomController extends Controller
         $form = new Form(new BorrowRoom);
         $admin_user = \Admin::user();
         $isDosen = $admin_user->isRole('dosen');
-        $isTatausaha = $admin_user->isRole('tata-usaha');
+        $isTatausaha = $admin_user->isRole('komisi-rumah-tangga');
 
         if ($form->isEditing())
             $form->display('id', 'ID');
 
-        // Mahasiswa Form
+        // Peminjam Form
         if ($isDosen) {
             $form->display('full_name', 'Peminjam');
             $form->display('status_peminjam', 'Status Peminjam');
@@ -277,7 +277,7 @@ class BorrowRoomController extends Controller
 
             // Check if lecturer approved the borrow_rooms
             $form->hidden('admin_id');
-            $form->radio('admin_approval_status', 'Status Persetujuan Tata Usaha')
+            $form->radio('admin_approval_status', 'Status Persetujuan Komisi Rumah Tangga')
                 ->options(ApprovalStatus::asSelectArray());
 
             $form->datetime('processed_at', 'Kunci Diambil Pada')->format('YYYY-MM-DD HH:mm')->with(function ($value, Field $thisField) {
@@ -297,12 +297,12 @@ class BorrowRoomController extends Controller
             // }
 
             // Approval administration and etc
-            $form->select('admin_id', 'Tata Usaha')->options(function ($id) {
+            $form->select('admin_id', 'Komisi Rumah Tangga')->options(function ($id) {
                 $administrators = Administrator::find($id);
                 if ($administrators)
                     return [$administrators->id => $administrators->name];
             })->ajax('/admin/api/administrators');
-            $form->radio('admin_approval_status', 'Status Persetujuan Tata Usaha')->options(ApprovalStatus::asSelectArray());
+            $form->radio('admin_approval_status', 'Status Persetujuan Komisi Rumah Tangga')->options(ApprovalStatus::asSelectArray());
             $form->datetime('processed_at', 'Kunci Diambil Pada')->format('YYYY-MM-DD HH:mm');
             $form->datetime('returned_at', 'Diselesaikan Pada')->format('YYYY-MM-DD HH:mm');
             $form->textarea('notes', 'Catatan');

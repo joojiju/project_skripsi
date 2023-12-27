@@ -11,7 +11,7 @@ class AdministratorApiController extends Controller
 {
 
     /**
-     * Get all administrator where has role `mahasiswa`
+     * Get all administrator where has role `peminjam`
      *
      * @param  mixed $request
      * @return void
@@ -21,12 +21,12 @@ class AdministratorApiController extends Controller
         $q = $request->get('q');
 
         return Administrator::whereHas('roles', function ($query) {
-            $query->where('slug', 'mahasiswa');
+            $query->where('slug', 'peminjam');
         })->where('name', 'like', "%$q%")->paginate(null, ['id', 'name as text']);
     }
 
     /**
-     * Get all administrator where has role `tata-usaha`
+     * Get all administrator where has role `komisi-rumah-tangga`
      *
      * @param  mixed $request
      * @return void
@@ -36,7 +36,7 @@ class AdministratorApiController extends Controller
         $q = $request->get('q');
 
         return Administrator::whereHas('roles', function ($query) {
-            $query->where('slug', 'tata-usaha');
+            $query->where('slug', 'komisi-rumah-tangga');
         })->where('name', 'like', "%$q%")->paginate(null, ['id', 'name as text']);
     }
 }
