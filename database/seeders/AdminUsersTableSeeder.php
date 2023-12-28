@@ -26,6 +26,17 @@ class AdminUsersTableSeeder extends Seeder
                 'created_at' => '2021-08-11 10:21:03',
                 'updated_at' => '2021-08-11 10:21:03',
             ),
+            1 =>
+            array (
+                'id' => 2,
+                'username' => 'joojiju',
+                'password' => '$2y$10$k2jNYZ66DQeRnDVVei4kOeceRvvvU70bJkZo4fHhTDFYivPCeLW52',
+                'name' => 'Johanes Christian Pandapotan',
+                'avatar' => NULL,
+                'remember_token' => 'bwMPZyAVO3dD4ttpf6NH6RtpZvt14qgokxHx1QaLVzsgShaiYxNmv4WTZmwt',
+                'created_at' => '2021-08-11 10:21:03',
+                'updated_at' => '2021-08-11 10:21:03',
+            ),
         );
 
         // Checking if the table already have a query

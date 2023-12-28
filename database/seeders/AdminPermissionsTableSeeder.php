@@ -92,7 +92,7 @@ class AdminPermissionsTableSeeder extends Seeder
             7 =>
             array(
                 'id' => 8,
-                'name' => 'Create Room Type',
+                'name' => 'Create Buildings',
                 'slug' => 'create.buildings',
                 'http_method' => 'POST',
                 'http_path' => '/buildings*',
@@ -102,7 +102,7 @@ class AdminPermissionsTableSeeder extends Seeder
             8 =>
             array(
                 'id' => 9,
-                'name' => 'Edit Room Type',
+                'name' => 'Edit Buildings',
                 'slug' => 'edit.buildings',
                 'http_method' => 'PUT',
                 'http_path' => '/buildings/*',
@@ -111,8 +111,8 @@ class AdminPermissionsTableSeeder extends Seeder
             ),
             9 =>
             array(
-                'id' => 11,
-                'name' => 'Delete Room Type',
+                'id' => 10,
+                'name' => 'Delete Buildings',
                 'slug' => 'delete.buildings',
                 'http_method' => 'DELETE',
                 'http_path' => '/buildings/*',
@@ -121,7 +121,7 @@ class AdminPermissionsTableSeeder extends Seeder
             ),
             10 =>
             array(
-                'id' => 12,
+                'id' => 11,
                 'name' => 'List Rooms',
                 'slug' => 'list.rooms',
                 'http_method' => 'GET',
@@ -131,7 +131,7 @@ class AdminPermissionsTableSeeder extends Seeder
             ),
             11 =>
             array(
-                'id' => 13,
+                'id' => 12,
                 'name' => 'Create Room',
                 'slug' => 'create.rooms',
                 'http_method' => 'POST',
@@ -141,7 +141,7 @@ class AdminPermissionsTableSeeder extends Seeder
             ),
             12 =>
             array(
-                'id' => 14,
+                'id' => 13,
                 'name' => 'Edit Room',
                 'slug' => 'edit.rooms',
                 'http_method' => 'PUT',
@@ -151,7 +151,7 @@ class AdminPermissionsTableSeeder extends Seeder
             ),
             13 =>
             array(
-                'id' => 15,
+                'id' => 14,
                 'name' => 'Delete Room',
                 'slug' => 'delete.rooms',
                 'http_method' => 'DELETE',
@@ -161,7 +161,7 @@ class AdminPermissionsTableSeeder extends Seeder
             ),
             14 =>
             array(
-                'id' => 16,
+                'id' => 15,
                 'name' => 'List Borrow Rooms',
                 'slug' => 'list.borrow_rooms',
                 'http_method' => 'GET',
@@ -171,7 +171,7 @@ class AdminPermissionsTableSeeder extends Seeder
             ),
             15 =>
             array(
-                'id' => 17,
+                'id' => 16,
                 'name' => 'Create Borrow Room',
                 'slug' => 'create.borrow_rooms',
                 'http_method' => 'POST',
@@ -181,7 +181,7 @@ class AdminPermissionsTableSeeder extends Seeder
             ),
             16 =>
             array(
-                'id' => 18,
+                'id' => 17,
                 'name' => 'Edit Borrow Room',
                 'slug' => 'edit.borrow_rooms',
                 'http_method' => 'PUT',
@@ -191,7 +191,7 @@ class AdminPermissionsTableSeeder extends Seeder
             ),
             17 =>
             array(
-                'id' => 19,
+                'id' => 18,
                 'name' => 'Delete Borrow Rooms',
                 'slug' => 'delete.borrow_rooms',
                 'http_method' => 'DELETE',
@@ -201,7 +201,7 @@ class AdminPermissionsTableSeeder extends Seeder
             ),
             18 =>
             array(
-                'id' => 20,
+                'id' => 19,
                 'name' => 'List Inventories',
                 'slug' => 'list.inventories',
                 'http_method' => 'GET',
@@ -211,7 +211,7 @@ class AdminPermissionsTableSeeder extends Seeder
             ),
             19 =>
             array(
-                'id' => 21,
+                'id' => 20,
                 'name' => 'Create Inventories',
                 'slug' => 'create.inventories',
                 'http_method' => 'POST',
@@ -221,7 +221,7 @@ class AdminPermissionsTableSeeder extends Seeder
             ),
             20 =>
             array(
-                'id' => 22,
+                'id' => 21,
                 'name' => 'Edit Inventories',
                 'slug' => 'edit.inventories',
                 'http_method' => 'PUT',
@@ -229,9 +229,9 @@ class AdminPermissionsTableSeeder extends Seeder
                 'created_at' => '2021-08-12 02:12:23',
                 'updated_at' => '2021-08-12 02:12:23',
             ),
-            13 =>
+            21 =>
             array(
-                'id' => 23,
+                'id' => 22,
                 'name' => 'Delete Inventories',
                 'slug' => 'delete.inventories',
                 'http_method' => 'DELETE',

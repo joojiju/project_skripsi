@@ -21,17 +21,10 @@ class HomeController extends Controller
             ->title('<b>DASHBOARD</b>')
             ->description('SIPRIG')
             ->row(function (Row $row) {
-                // Widget for users
-                $row->column(3, function (Column $column) {
-                    $count_users = \DB::table('admin_users')->count();
-                    $infoBox = new InfoBox('Pengguna', 'users', 'blue', route('admin.auth.users.index'), $count_users);
-                    $column->append($infoBox);
-                });
-
                 // Widget for buildings
                 $row->column(3, function (Column $column) {
                     $count_buildings = \DB::table('buildings')->count();
-                    $infoBox = new InfoBox('Bangunan', 'building', 'orange', route('admin.buildings.index'), $count_buildings);
+                    $infoBox = new InfoBox('Bangunan', 'building', 'blue', route('admin.buildings.index'), $count_buildings);
                     $column->append($infoBox);
                 });
 

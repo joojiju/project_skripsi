@@ -24,182 +24,161 @@ class AdminRolePermissionsTableSeeder extends Seeder
             ),
             1 =>
             array(
-                'role_id' => 3,
+                'role_id' => 2,
                 'permission_id' => 2,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             2 =>
             array(
-                'role_id' => 3,
+                'role_id' => 2,
                 'permission_id' => 3,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             3 =>
             array(
-                'role_id' => 3,
+                'role_id' => 2,
                 'permission_id' => 4,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             4 =>
             array(
-                'role_id' => 3,
+                'role_id' => 2,
                 'permission_id' => 7,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             5 =>
             array(
-                'role_id' => 3,
-                'permission_id' => 12,
-                'created_at' => NULL,
-                'updated_at' => NULL,
-            ),
-            6 =>
-            array(
-                'role_id' => 3,
-                'permission_id' => 16,
-                'created_at' => NULL,
-                'updated_at' => NULL,
-            ),
-            7 =>
-            array(
-                'role_id' => 3,
-                'permission_id' => 18,
-                'created_at' => NULL,
-                'updated_at' => NULL,
-            ),
-            8 =>
-            array(
-                'role_id' => 2,
-                'permission_id' => 2,
-                'created_at' => NULL,
-                'updated_at' => NULL,
-            ),
-            9 =>
-            array(
-                'role_id' => 2,
-                'permission_id' => 3,
-                'created_at' => NULL,
-                'updated_at' => NULL,
-            ),
-            10 =>
-            array(
-                'role_id' => 2,
-                'permission_id' => 4,
-                'created_at' => NULL,
-                'updated_at' => NULL,
-            ),
-            11 =>
-            array(
-                'role_id' => 2,
-                'permission_id' => 7,
-                'created_at' => NULL,
-                'updated_at' => NULL,
-            ),
-            12 =>
-            array(
                 'role_id' => 2,
                 'permission_id' => 8,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            13 =>
+            6 =>
             array(
                 'role_id' => 2,
                 'permission_id' => 9,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            14 =>
+            7 =>
+            array(
+                'role_id' => 2,
+                'permission_id' => 10,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            8 =>
             array(
                 'role_id' => 2,
                 'permission_id' => 11,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            15 =>
+            9 =>
             array(
                 'role_id' => 2,
                 'permission_id' => 12,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            16 =>
+            10 =>
             array(
                 'role_id' => 2,
                 'permission_id' => 13,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            17 =>
+            11 =>
             array(
                 'role_id' => 2,
                 'permission_id' => 14,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            18 =>
+            12 =>
             array(
                 'role_id' => 2,
                 'permission_id' => 15,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            19 =>
+            13 =>
             array(
                 'role_id' => 2,
                 'permission_id' => 16,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            20 =>
+            14 =>
             array(
                 'role_id' => 2,
                 'permission_id' => 17,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            21 =>
+            15 =>
             array(
                 'role_id' => 2,
                 'permission_id' => 18,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            22 =>
+            16 =>
             array(
                 'role_id' => 2,
                 'permission_id' => 19,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            23 =>
+            17 =>
             array(
-                'role_id' => 4,
+                'role_id' => 2,
+                'permission_id' => 20,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            18 =>
+            array(
+                'role_id' => 2,
+                'permission_id' => 21,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            19 =>
+            array(
+                'role_id' => 2,
+                'permission_id' => 22,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            20 =>
+            array(
+                'role_id' => 3,
                 'permission_id' => 2,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            24 =>
+            21 =>
             array(
-                'role_id' => 4,
+                'role_id' => 3,
                 'permission_id' => 3,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            25 =>
+            22 =>
             array(
-                'role_id' => 4,
+                'role_id' => 3,
                 'permission_id' => 4,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            26 =>
+            23 =>
             array(
-                'role_id' => 4,
+                'role_id' => 3,
                 'permission_id' => 16,
                 'created_at' => NULL,
                 'updated_at' => NULL,

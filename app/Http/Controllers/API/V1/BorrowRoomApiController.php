@@ -19,7 +19,7 @@ class BorrowRoomApiController extends Controller
     {
         // Set request to variable
         $email =            $request->email;
-        $full_name =        \Str::upper($request->full_name);
+        $full_name =        ($request->full_name);
         $phone_number =     $request->phone_number;
         $status_peminjam =  $request->status_peminjam;
         $activity =         $request->activity;
