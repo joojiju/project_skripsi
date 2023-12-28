@@ -65,23 +65,23 @@ class BorrowRoomApiController extends Controller
         if ($validator->fails())
             return redirect(route('home'))->withInput($request->input())->withErrors($validator);
 
-        // Check if admin_user (college student) is exist
+        // Check if admin_user (borrower) is exist
         $admin_user = Administrator::where('username', $email)->first();
         if ($admin_user === null) {
-            // Make account for college student
+            // Make account for borrower
             $admin_user = Administrator::create([
                 'username' =>   $email,
                 'name' =>       $full_name,
                 'password' =>   Hash::make($request->phone_number)
             ]);
 
-            // Add role college student
+            // Add role borrower
             $admin_role_user = \DB::table('admin_role_users')->insert([
                 'role_id' =>    3,
                 'user_id' =>    $admin_user->id,
             ]);
 
-            // Make college student details to user_details table
+            // Make borrower details to user_details table
             $college_student_detail = AdminUserDetail::create([
                 'admin_user_id' =>  $admin_user->id,
                 'data' =>           $data
@@ -104,7 +104,7 @@ class BorrowRoomApiController extends Controller
                 'Maaf ruangan tersebut sudah dibooking pada tanggal tersebut, silahkan pilih tanggal lain.'
             ]);
 
-        // Check if college student already have active borrow_rooms and didn't return the key
+        // Check if borrower already have active borrow_rooms and didn't return the key
         $borrow_rooms = BorrowRoom::where('borrower_id', $admin_user->id);
         $borrow_rooms_is_empty = $borrow_rooms->get()->isEmpty();
 
