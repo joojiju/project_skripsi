@@ -119,11 +119,11 @@ class BorrowRoomController extends Controller
                     else if ($processed_at != null)
                         $val = ['success', 'Ruangan sedang digunakan'];
                         else
-                            $val = ['success', 'Sudah disetujui TU']; }
+                            $val = ['success', 'Sudah disetujui']; }
                     else if ($admin_approval_status == 0)
-                        $val = ['info', 'Menunggu persetujuan TU'];
+                        $val = ['info', 'Menunggu persetujuan'];
                         else
-                            $val = ['danger', 'Ditolak TU'];
+                            $val = ['danger', 'Ditolak'];
 
             return '<span class="label-' . $val[0] . '" style="width: 8px;height: 8px;padding: 0;border-radius: 50%;display: inline-block;"></span>&nbsp;&nbsp;'
                 . $val[1];
@@ -219,8 +219,14 @@ class BorrowRoomController extends Controller
             $form->display('email', 'Email');
             $form->display('phone_number', 'Nomor Telepon');
             $form->display('activity', 'Kegiatan');
-            $form->display('room.name', 'Ruangan');
-            $form->display('inventory.name', 'Inventaris');
+            $form->select('room_id', 'Ruangan')->options(function ($id) {
+                return Room::all()->pluck('name', 'id');
+            });
+            $form->select('inventory_id', 'Inventaris')->options(function ($id) {
+                return Inventory::all()->pluck('name', 'id');
+            });
+            $form->datetime('borrow_at', 'Mulai Pinjam')->format('YYYY-MM-DD HH:mm');
+            $form->datetime('until_at', 'Selesai Pinjam')->format('YYYY-MM-DD HH:mm');
             $form->display('borrow_at', 'Lama Pinjam')->with(function () {
                 $borrow_at = Carbon::parse($this->borrow_at);
                 $until_at = Carbon::parse($this->until_at);
@@ -232,11 +238,7 @@ class BorrowRoomController extends Controller
                     return $count_days . ' hari (' . $borrow_at->format('d M Y') . ' s/d ' . $until_at->format('d M Y') . ')';
             });
         } else {
-            $form->select('borrower_id', 'Peminjam')->options(function ($id) {
-                $college_students = Administrator::find($id);
-                if ($college_students)
-                    return [$college_students->id => $college_students->name];
-            })->ajax('/admin/api/college-students');
+            $form->display('full_name', 'Peminjam');
             $form->select('room_id', 'Ruangan')->options(function ($id) {
                 $room = Room::find($id);
                 if ($room)
@@ -252,7 +254,7 @@ class BorrowRoomController extends Controller
             $form->display('created_at', 'Diajukan pada')->with(function () {
                 return Carbon::parse($this->created_at)->format('d M Y');
             });
-            $form->radio('admin_approval_status', 'Status Persetujuan TU')->options(ApprovalStatus::asSelectArray()); 
+            $form->radio('admin_approval_status', 'Status Persetujuan')->options(ApprovalStatus::asSelectArray()); 
             $form->select('admin_id', 'Komisi Rumah Tangga')->options(function ($id) {
                 $administrators = Administrator::find($id);
                 if ($administrators)

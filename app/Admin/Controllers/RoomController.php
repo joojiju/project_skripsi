@@ -101,9 +101,9 @@ class RoomController extends Controller
                         else if ($processed_at != null)
                             $val = ['success', 'Ruangan sedang digunakan'];
                         else
-                            $val = ['success', 'Sudah disetujui TU'];
+                            $val = ['success', 'Sudah disetujui'];
                     } else if ($admin_approval_status == 0)
-                        $val = ['info', 'Menunggu persetujuan TU'];
+                        $val = ['info', 'Menunggu persetujuan'];
             }
 
             // return 'wkwk';
