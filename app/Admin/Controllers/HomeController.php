@@ -86,4 +86,6 @@ class HomeController extends Controller
         else if ($hours >= 19 && $hours <= 23)
             return "Malam";
     }
+
+    
 }

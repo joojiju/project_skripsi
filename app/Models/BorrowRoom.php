@@ -12,6 +12,9 @@ class BorrowRoom extends Model
     use SoftDeletes;
 
     protected $table = 'borrow_rooms';
+    protected $casts = [
+        'inventory_id' => 'json',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -19,6 +22,7 @@ class BorrowRoom extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'borrower_id',
         'email',
         'full_name',
@@ -53,7 +57,7 @@ class BorrowRoom extends Model
 
     public function inventory()
     {
-        return $this->belongsTo(Inventory::class);
+        return $this->hasMany(Inventory::class, 'id', 'inventory_id');
     }
 
     public function borrower()
@@ -88,4 +92,9 @@ class BorrowRoom extends Model
     /**
      * Mutators
      */
+
+     public function scopeTrashed($query)
+    {
+        return $query->onlyTrashed();
+    }
 }

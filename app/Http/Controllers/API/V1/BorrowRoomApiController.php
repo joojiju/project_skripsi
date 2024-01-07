@@ -17,6 +17,7 @@ class BorrowRoomApiController extends Controller
 {
     public function storeBorrowRoomWithCollegeStudent(Request $request)
     {
+        // dd($request);
         // Set request to variable
         $email =            $request->email;
         $full_name =        ($request->full_name);
@@ -34,7 +35,7 @@ class BorrowRoomApiController extends Controller
         $validator = Validator::make($request->all(), [
             'email' =>              'required|string',
             'full_name' =>          'required|string',
-            'phone_number' =>       'required|integer',
+            'phone_number' =>       'required|numeric',
             'status_peminjam' =>    'required',
             'activity' =>           'required|string',
             'borrow_at' =>          'required|date|after_or_equal:' . now()->format('d-m-Y H:i'),
@@ -45,7 +46,7 @@ class BorrowRoomApiController extends Controller
             'email.required' =>             'Kolom email wajib diisi.',
             'full_name.required' =>         'Kolom nama lengkap wajib diisi.',
             'phone_number.required' =>      'Kolom nomor telepon wajib diisi.',
-            'phone_number.integer' =>       'Kolom nomor telepon harus berupa nomor.',
+            'phone_number.numeric' =>       'Kolom nomor telepon harus berupa nomor.',
             'activity.required' =>          'Kolom aktivitas wajib diisi.',
 
             'borrow_at.required' =>         'Kolom tgl mulai wajib diisi.',
@@ -121,6 +122,7 @@ class BorrowRoomApiController extends Controller
 
         // Add borrow rooms
         $borrow_room = BorrowRoom::create([
+            'id' => date('YmdHis'),
             'email' =>              $email,
             'full_name' =>          $full_name,
             'phone_number' =>       $phone_number,

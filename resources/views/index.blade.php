@@ -8,7 +8,7 @@
           <div class="col-md-7 ftco-animate">
           	<h2 class="subheading">Selamat datang di SIPRIG (Sistem Informasi Peminjaman Ruangan dan Inventaris Gereja Kristen Jawa Pamulang)</h2>
           	<h1 class="mb-4">Pinjam ruangan mudah dan cepat</h1>
-            <p><a href="{{ route('rooms') }}" class="btn btn-primary">Cek Ketersediaan</a> <a href="#" class="btn btn-white">Cek Status Pengajuan</a></p>
+            <p><a href="{{ route('rooms') }}" class="btn btn-primary">Cek Ketersediaan</a> <a href="{{ route('status')}}" class="btn btn-white">Cek Status Pengajuan</a></p>
           </div>
         </div>
       </div>
@@ -25,7 +25,7 @@
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     @foreach ($errors->all() as $message)
                                         @if ($message == 'login_for_more_info')
-                                            <a href="{{ route('admin.login') }}">Masuk</a> untuk melihat aktivitas peminjaman.
+                                            <a href="{{ route('status') }}">Cek status</a> untuk melihat status peminjaman.
                                         @else
                                             {{ $message }}<br>
                                         @endif
@@ -37,7 +37,7 @@
                             @endif
                             @if (session('success'))
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    Pinjam ruang berhasil, silahkan cek status peminjaman <a href="{{ route('admin.login') }}">disini</a>. Masuk menggunakan email dan password nomor telepon.
+                                    Pinjam ruang berhasil, silahkan cek email untuk melihat nomor resi dan silahkan cek status <a href="{{ route('status') }}">disini</a>.
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -69,9 +69,9 @@
 	          					    <div class="select-wrap">
 	                                <div class="icon"><span class="fa fa-chevron-down"></span></div>
 	                                <select name="status_peminjam" id="" class="form-control">
-	                      	        <option value="" selected disabled>Status Peminjam</option>
-	                      	        <option value="jemaat" @if(old('status_peminjam') == 'jemaat') selected @endif>Jemaat</option>
-	                      	        <option value="umum" @if(old('status_peminjam') == 'umum') selected @endif>Umum</option>
+	                      	            <option value="" selected disabled>Status Peminjam</option>
+	                      	            <option value="jemaat" @if(old('status_peminjam') == 'jemaat') selected @endif>Jemaat</option>
+	                      	            <option value="umum" @if(old('status_peminjam') == 'umum') selected @endif>Umum</option>
 	                                </select>
 	                            </div>
 			                    </div>
@@ -89,7 +89,7 @@
 			    					<div class="input-wrap">
 			            		    <div class="icon"><span class="ion-md-calendar"></span></div>
 			            		    <input id="borrow_at" name="borrow_at" value="{{ old('borrow_at') }}" type="text" class="form-control appointment_date-check-in datetimepicker-input" placeholder="Tanggal Mulai" data-toggle="datetimepicker" data-target="#borrow_at">
-		            		</div>
+		            		    </div>
 			    				</div>
 								</div>
 
@@ -103,44 +103,41 @@
 								</div>
 
 								<div class="col-md-12">
-									<div class="form-group">
-			    					<div class="form-field">
-	          					<div class="select-wrap">
-	                                <div class="icon"><span class="fa fa-chevron-down"></span></div>
-	                                <select name="room" id="" class="form-control">
-	                      	        <option value="" selected disabled>Pilih Ruangan</option>
-                                    @forelse ($data['rooms'] as $room)
-                                    <option value="{{ $room->id }}" @if(old('room') == $room->id) selected @endif>
-                                    {{ $room->building->name . ' - ' . $room->name }}
-                                    </option>
-                                    @empty
-                                    <option value="" disabled>Belum ada ruangan yang tersedia</option>
-                                    @endforelse
-	                                </select>
-	                            </div>
-			                    </div>
+								    <div class="form-group">
+                                    <div class="form-field">
+                                    <div class="select-wrap">
+                                    <div class="icon"><span class="fa fa-chevron-down"></span></div>
+                                    <select name="room" id="" class="form-control">
+                                        <option value="" selected disabled>Pilih Ruangan</option>
+                                        @forelse ($data['rooms'] as $room)
+                                        <option value="{{ $room->id }}" @if(old('room') == $room->id) selected @endif>
+                                        {{ $room->building->name . ' - ' . $room->name }}
+                                        </option>
+                                        @empty
+                                        <option value="" disabled>Belum ada ruangan yang tersedia</option>
+                                        @endforelse
+                                        </select>
+                                </div>
+                                </div>
 			    				</div>
 								</div>
 
-								<div class="col-md-12">
-									<div class="form-group">
-			    					<div class="form-field">
-	          					<div class="select-wrap">
-	                                <div class="icon"><span class="fa fa-chevron-down"></span></div>
-	                                <select name="inventory" id="" class="form-control">
-	                      	        <option value="" selected disabled>Pilih Inventaris</option>
-                                    @forelse ($data['inventories'] as $inventory)
-                                    <option value="{{ $inventory->id }}" @if(old('inventory') == $inventory->id) selected @endif>
-                                    {{ $inventory->name }}
-                                    </option>
-                                    @empty
-                                    <option value="" disabled>Belum ada inventaris yang tersedia</option>
-                                    @endforelse
-	                                </select>
-	                            </div>
-			                    </div>
-			    				</div>
-								</div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                    <div class="select2-purple">
+                                    <select name="inventory[]" class="select2 custom-select" multiple="multiple" data-placeholder="Pilih Inventaris" data-dropdown-css-class="select2-purple">
+                                        <option value="" disabled>Pilih Inventaris</option>
+                                        @forelse ($data['inventories'] as $inventory)
+                                        <option value="{{ $inventory->id }}" @if(in_array($inventory->id, old('inventory', []))) selected @endif>
+                                        {{ $inventory->name }}
+                                        </option>
+                                        @empty
+                                        <option value="" disabled>Belum ada inventaris yang tersedia</option>
+                                        @endforelse
+                                        </select>
+                                </div>
+                                </div>
+                                </div>
 
 								<div class="col-md-12">
 									<div class="form-group">

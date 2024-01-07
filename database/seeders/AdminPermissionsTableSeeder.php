@@ -239,6 +239,86 @@ class AdminPermissionsTableSeeder extends Seeder
                 'created_at' => '2021-08-12 02:12:40',
                 'updated_at' => '2021-08-12 02:12:40',
             ),
+            22 =>
+            array(
+                'id' => 23,
+                'name' => 'Pengajuan Disetujui',
+                'slug' => 'approved.borrows',
+                'http_method' => 'GET',
+                'http_path' => '/borrows/approved*',
+                'created_at' => '2021-08-12 02:12:40',
+                'updated_at' => '2021-08-12 02:12:40',
+            ),
+            23 =>
+            array(
+                'id' => 24,
+                'name' => 'Pengajuan Ditolak',
+                'slug' => 'denied.borrows',
+                'http_method' => 'GET',
+                'http_path' => '/borrows/denied*',
+                'created_at' => '2021-08-12 02:12:40',
+                'updated_at' => '2021-08-12 02:12:40',
+            ),
+            24 =>
+            array(
+                'id' => 25,
+                'name' => 'Pengajuan Berjalan',
+                'slug' => 'ongoing.borrows',
+                'http_method' => 'GET',
+                'http_path' => '/borrows/ongoing*',
+                'created_at' => '2021-08-12 02:12:40',
+                'updated_at' => '2021-08-12 02:12:40',
+            ),
+            25 =>
+            array(
+                'id' => 26,
+                'name' => 'Pengajuan Selesai',
+                'slug' => 'finished.borrows',
+                'http_method' => 'GET',
+                'http_path' => '/borrows/finished*',
+                'created_at' => '2021-08-12 02:12:40',
+                'updated_at' => '2021-08-12 02:12:40',
+            ),
+            26 =>
+            array(
+                'id' => 27,
+                'name' => 'Pengajuan Batal',
+                'slug' => 'canceled.borrows',
+                'http_method' => 'GET',
+                'http_path' => '/borrows/canceled*',
+                'created_at' => '2021-08-12 02:12:40',
+                'updated_at' => '2021-08-12 02:12:40',
+            ),
+            27 =>
+            array(
+                'id' => 28,
+                'name' => 'Laporan Peminjaman Ruangan',
+                'slug' => 'rooms.report',
+                'http_method' => 'GET',
+                'http_path' => '/report/rooms*',
+                'created_at' => '2021-08-12 02:12:40',
+                'updated_at' => '2021-08-12 02:12:40',
+            ),
+            28 =>
+            array(
+                'id' => 29,
+                'name' => 'Laporan Peminjaman Inventaris',
+                'slug' => 'inventories.report',
+                'http_method' => 'GET',
+                'http_path' => '/report/inventories*',
+                'created_at' => '2021-08-12 02:12:40',
+                'updated_at' => '2021-08-12 02:12:40',
+            ),
+            29 =>
+            array(
+                'id' => 30,
+                'name' => 'Laporan Peminjaman Gedung',
+                'slug' => 'buildings.report',
+                'http_method' => 'GET',
+                'http_path' => '/report/buildings*',
+                'created_at' => '2021-08-12 02:12:40',
+                'updated_at' => '2021-08-12 02:12:40',
+            ),
         );
 
         // Checking if the table already have a query

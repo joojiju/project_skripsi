@@ -183,6 +183,62 @@ class AdminRolePermissionsTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
+            24 =>
+            array(
+                'role_id' => 2,
+                'permission_id' => 23,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            25 =>
+            array(
+                'role_id' => 2,
+                'permission_id' => 24,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            26 =>
+            array(
+                'role_id' => 2,
+                'permission_id' => 25,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            27 =>
+            array(
+                'role_id' => 2,
+                'permission_id' => 26,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            28 =>
+            array(
+                'role_id' => 2,
+                'permission_id' => 27,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            29 =>
+            array(
+                'role_id' => 2,
+                'permission_id' => 28,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            30 =>
+            array(
+                'role_id' => 2,
+                'permission_id' => 29,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            31 =>
+            array(
+                'role_id' => 2,
+                'permission_id' => 30,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
         );
 
         // Checking if the table already have a query

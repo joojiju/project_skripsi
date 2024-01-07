@@ -4878,7 +4878,7 @@ a.close.disabled {
   .bs-popover-top .arrow::before, .bs-popover-auto[x-placement^="top"] .arrow::before {
     bottom: 0;
     border-top-color: rgba(0, 0, 0, 0.25); }
-  
+
   .bs-popover-top .arrow::after,
   .bs-popover-auto[x-placement^="top"] .arrow::after {
     bottom: 1px;
@@ -4898,7 +4898,7 @@ a.close.disabled {
   .bs-popover-right .arrow::before, .bs-popover-auto[x-placement^="right"] .arrow::before {
     left: 0;
     border-right-color: rgba(0, 0, 0, 0.25); }
-  
+
   .bs-popover-right .arrow::after,
   .bs-popover-auto[x-placement^="right"] .arrow::after {
     left: 1px;
@@ -4915,7 +4915,7 @@ a.close.disabled {
   .bs-popover-bottom .arrow::before, .bs-popover-auto[x-placement^="bottom"] .arrow::before {
     top: 0;
     border-bottom-color: rgba(0, 0, 0, 0.25); }
-  
+
   .bs-popover-bottom .arrow::after,
   .bs-popover-auto[x-placement^="bottom"] .arrow::after {
     top: 1px;
@@ -4944,7 +4944,7 @@ a.close.disabled {
   .bs-popover-left .arrow::before, .bs-popover-auto[x-placement^="left"] .arrow::before {
     right: 0;
     border-left-color: rgba(0, 0, 0, 0.25); }
-  
+
   .bs-popover-left .arrow::after,
   .bs-popover-auto[x-placement^="left"] .arrow::after {
     right: 1px;
@@ -8577,7 +8577,14 @@ h1, h2, h3, h4, h5,
   box-shadow: none !important; }
   .form-control:focus, .form-control:active {
     border-color: #000000; }
+  .form-control::placeholder {
+    color: #757575 !important;
+    font-family: 'Helvetica Neue', sans-serif !important; }
 
+.form-control option[disabled][selected] {
+  color: #757575 !important;
+  font-family: 'Helvetica Neue', sans-serif !important; }
+    
 textarea.form-control {
   height: inherit !important; }
 
@@ -8650,10 +8657,13 @@ textarea.form-control {
   @media (min-width: 992px) {
     .ftco-book .appointment-form {
       margin-top: -650px; } }
-  .ftco-book .appointment-form .form-group {
+      .ftco-book .appointment-form .form-group {
     position: relative;
     width: 100%;
     display: block; }
+    .ftco-book .appointment-form .form-group:first-child .form-control {
+      color: #757575 !important;
+      font-family: 'Helvetica Neue', sans-serif !important; }
     .ftco-book .appointment-form .form-group .icon {
       position: absolute;
       top: 50% !important;
@@ -9438,3 +9448,81 @@ footer {
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
+
+      .select2-container--default {
+        background-color: #f2f2f2;
+        padding: 10px 5px;
+        border: transparent !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+        height: 50px !important;
+        background: rgba(0, 0, 0, 0.05) !important;
+        color: rgba(0, 0, 0, 0.9) !important;
+        font-size: 14px;
+        border-radius: 4px;
+
+  }
+  
+      .select2-container--default .select2-selection--multiple,
+      .select2-container--default .select2-selection--single {
+        background-color: #f2f2f2 !important;
+        border-color: #f2f2f2 !important;
+  }
+
+      .select2-container--default.select2-purple .select2-selection--multiple {
+        background-color: #f2f2f2;
+        border-color: #f2f2f2;
+  }
+
+      .select2-purple + .select2-container--default.select2-container--focus .select2-selection--single {
+        background-color: #f2f2f2;
+        border-color: #f2f2f2;
+      }
+      
+      .select2-container--default .select2-purple.select2-dropdown .select2-search__field:focus,
+      .select2-container--default .select2-purple .select2-dropdown .select2-search__field:focus,
+      .select2-container--default .select2-purple .select2-search--inline .select2-search__field:focus,
+      .select2-purple .select2-container--default.select2-dropdown .select2-search__field:focus,
+      .select2-purple .select2-container--default .select2-dropdown .select2-search__field:focus,
+      .select2-purple .select2-container--default .select2-search--inline .select2-search__field:focus {
+        border: 0px solid #b8a2e0;
+      }
+      .select2-container--default .select2-purple .select2-results__option--highlighted,
+      .select2-purple .select2-container--default .select2-results__option--highlighted {
+        background-color: #fd7792;
+        color: #000;
+      }
+
+      .select2-container--default .select2-purple .select2-results__option--highlighted[aria-selected], .select2-container--default .select2-purple .select2-results__option--highlighted[aria-selected]:hover,
+      .select2-purple .select2-container--default .select2-results__option--highlighted[aria-selected],
+      .select2-purple .select2-container--default .select2-results__option--highlighted[aria-selected]:hover {
+        background-color: #fd7792;
+        color: #fff;
+      }
+      .select2-container--default .select2-purple .select2-selection--multiple:focus,
+      .select2-purple .select2-container--default .select2-selection--multiple:focus {
+        border-color: #fd7792;
+      }
+
+      .select2-container--default .select2-purple .select2-selection--multiple .select2-selection__choice,
+      .select2-purple .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #fd7792;
+        border-color: #fd7792;
+        color: #fff;
+      }
+
+      .select2-container--default .select2-purple .select2-selection--multiple .select2-selection__choice__remove,
+      .select2-purple .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        color: rgba(255, 255, 255, 0.7);
+}
+
+      .select2-container--default .select2-purple .select2-selection--multiple .select2-selection__choice__remove:hover,
+      .select2-purple .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+        color: #fd7792;
+}
+
+    .select2-container--default .select2-purple.select2-container--focus .select2-selection--multiple,
+    .select2-purple .select2-container--default.select2-container--focus .select2-selection--multiple {
+      background-color: #f2f2f2;
+      border-color: #f2f2f2;
+}
+

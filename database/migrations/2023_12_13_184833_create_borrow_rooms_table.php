@@ -17,18 +17,21 @@ return new class extends Migration
             $table->unsignedInteger('borrower_id');
             $table->string('email');
             $table->string('full_name');
-            $table->integer('phone_number');
+            $table->string('phone_number');
             $table->string('status_peminjam');
             $table->string('activity');
             $table->foreignId('room_id')->constrained();
-            $table->foreignId('inventory_id')->constrained();
+            $table->json('inventory_id');
             $table->dateTime('borrow_at');
             $table->dateTime('until_at');
             $table->unsignedInteger('admin_id')->nullable();
             $table->tinyInteger('admin_approval_status')->nullable();
             $table->dateTime('processed_at')->nullable();
             $table->dateTime('returned_at')->nullable();
+            $table->string('receipt')->nullable();
+            $table->decimal('price')->nullable();
             $table->text('notes')->nullable();
+            $table->dateTime('payment_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

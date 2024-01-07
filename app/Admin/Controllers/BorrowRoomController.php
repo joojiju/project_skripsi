@@ -15,6 +15,8 @@ use Encore\Admin\Form\Field;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use App\Mail\BorrowOrderMail;
+use Illuminate\Support\Facades\Mail;
 
 class BorrowRoomController extends Controller
 {
@@ -29,7 +31,7 @@ class BorrowRoomController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('<b>PEMINJAMAN</b>')
+            ->header('<b>PEMINJAMAN MASUK</b>')
             ->description(trans('admin.list'))
             ->body($this->grid());
     }
@@ -90,7 +92,8 @@ class BorrowRoomController extends Controller
         $admin_user = \Admin::user();
         // Show query only related to roles
         if ($admin_user->isRole('peminjam'))
-            $grid->model()->where('borrower_id', $admin_user->id);
+        $grid->model()->where('borrower_id', $admin_user->id);
+        $grid->model()->where('admin_approval_status', null);
 
         $grid->id('ID');
         $grid->column('full_name', 'Peminjam');
@@ -99,7 +102,19 @@ class BorrowRoomController extends Controller
         $grid->column('phone_number', 'Nomor Telepon');
         $grid->column('activity', 'Kegiatan');
         $grid->column('room.name', 'Ruangan');
-        $grid->column('inventory.name', 'Inventaris');
+        // Access JSON data using the `->` notation
+
+        $grid->column('inventory_name', 'Inventory')->display(function () {
+            // Decode the JSON array and fetch inventory names
+            $inventoryIds = $this->inventory_id ?? [];
+
+            // Fetch inventory names using the relationship
+            $inventoryNames = Inventory::whereIn('id', $inventoryIds)->pluck('name')->toArray();
+
+            // Convert the array of names to a comma-separated string
+            return implode(', ', $inventoryNames);
+        });
+
         $grid->column('borrow_at', 'Mulai Pinjam')->display(function ($borrow_at) {
             return Carbon::parse($borrow_at)->format('d M Y H:i');
         });
@@ -168,7 +183,16 @@ class BorrowRoomController extends Controller
         $show->field('phone_number', 'Nomor Telepon');
         $show->field('activity', 'Kegiatan');
         $show->field('room.name', 'Ruangan');
-        $show->field('inventory.name', 'Inventaris');
+        $show->field('inventory_name', 'Inventory')->display(function () {
+            // Decode the JSON array and fetch inventory names
+            $inventoryIds = $this->inventory_id ?? [];
+
+            // Fetch inventory names using the relationship
+            $inventoryNames = Inventory::whereIn('id', $inventoryIds)->pluck('name')->toArray();
+
+            // Convert the array of names to a comma-separated string
+            return implode(', ', $inventoryNames);
+        });
         $show->field('borrow_at', 'Mulai Pinjam');
         $show->field('until_at', 'Selesai Pinjam');
         $show->field('admin.name', ' Komisi Rumah Tangga');
@@ -176,6 +200,11 @@ class BorrowRoomController extends Controller
         $show->field('processed_at', 'Kunci Diambil Pada');
         $show->field('returned_at', 'Diselesaikan Pada');
         $show->field('notes', 'Catatan');
+        $show->field('payment_at', 'Tanggal Pembayaran');
+        $show->field('receipt', 'Bukti Pembayaran')->image();
+        $show->field('payment_amount', 'Jumlah Pembayaran')->as(function ($payment_amount) {
+            return 'Rp ' . number_format($payment_amount, 0, ',', '.');
+        });
         $show->created_at(trans('admin.created_at'));
         $show->updated_at(trans('admin.updated_at'));
 
@@ -210,19 +239,18 @@ class BorrowRoomController extends Controller
         $isKomisirumahtangga = $admin_user->isRole('komisi-rumah-tangga');
 
         if ($form->isEditing())
-            $form->display('id', 'ID');
-
+        $form->display('id', 'ID');
         // Peminjam Form
         if ($isKomisirumahtangga) {
-            $form->display('full_name', 'Peminjam');
+            $form->text('full_name', 'Peminjam');
             $form->display('status_peminjam', 'Status Peminjam');
             $form->display('email', 'Email');
             $form->display('phone_number', 'Nomor Telepon');
-            $form->display('activity', 'Kegiatan');
+            $form->text('activity', 'Kegiatan');
             $form->select('room_id', 'Ruangan')->options(function ($id) {
                 return Room::all()->pluck('name', 'id');
             });
-            $form->select('inventory_id', 'Inventaris')->options(function ($id) {
+            $form->multipleSelect('inventory_id', 'Inventaris')->options(function ($id) {
                 return Inventory::all()->pluck('name', 'id');
             });
             $form->datetime('borrow_at', 'Mulai Pinjam')->format('YYYY-MM-DD HH:mm');
@@ -254,7 +282,7 @@ class BorrowRoomController extends Controller
             $form->display('created_at', 'Diajukan pada')->with(function () {
                 return Carbon::parse($this->created_at)->format('d M Y');
             });
-            $form->radio('admin_approval_status', 'Status Persetujuan')->options(ApprovalStatus::asSelectArray()); 
+            $form->radio('admin_approval_status', 'Status Persetujuan')->options(ApprovalStatus::asSelectArray());
             $form->select('admin_id', 'Komisi Rumah Tangga')->options(function ($id) {
                 $administrators = Administrator::find($id);
                 if ($administrators)
@@ -273,6 +301,9 @@ class BorrowRoomController extends Controller
                 if ($this->processed_at == null)
                     $thisField->attribute('readonly', 'readonly');
             });
+            $form->image('receipt', 'Bukti Pembayaran')->uniqueName()->removable();
+            $form->currency('payment_amount', 'Jumlah Pembayaran')->symbol('Rp')->digits(0)->default(0);
+            $form->datetime('payment_at', 'Tanggal Pembayaran')->format('YYYY-MM-DD HH:mm');
             $form->textarea('notes', 'Catatan');
 
             if ($form->isEditing()) {
@@ -281,11 +312,496 @@ class BorrowRoomController extends Controller
             }
         }
 
+        // Prepare the email content
+
         $form->saving(function (Form $form) {
             // if ($form->admin_id)
+            // dd($form);
+            $order = [
+                'id' => $form->id,
+                'email' => $form->email,
+                'full_name' => $form->full_name,
+                'status_peminjam' => $form->status_peminjam,
+                'admin_approval_status' => $form->admin_approval_status,
+                'returned_at' => $form->returned_at,
+                'processed_at' => $form->processed_at
+            ];
+
+            // dd($order);
+
+            Mail::to($form->email)
+            ->cc(['contact@siprig.com'])
+            ->send(new BorrowOrderMail($order));
+
             $form->admin_id = \Admin::user()->id;
         });
 
         return $form;
+    }
+
+    public function approved(Content $content)
+    {
+        return $content
+            ->header('<b>PEMINJAMAN DISETUJUI</b>')
+            ->description(trans('admin.list'))
+            ->body($this->grid_approved());
+    }
+
+     /**
+     * Make a grid builder.
+     *
+     * @return Grid
+     */
+    protected function grid_approved()
+    {
+        $grid = new Grid(new BorrowRoom);
+
+        $admin_user = \Admin::user();
+        // Show query only related to roles
+        if ($admin_user->isRole('peminjam'))
+        $grid->model()->where('borrower_id', $admin_user->id);
+        $grid->model()->where('admin_approval_status', 1);
+
+        $grid->id('ID');
+        $grid->column('full_name', 'Peminjam');
+        $grid->column('status_peminjam', 'Status Peminjam');
+        $grid->column('email', 'Email');
+        $grid->column('phone_number', 'Nomor Telepon');
+        $grid->column('activity', 'Kegiatan');
+        $grid->column('room.name', 'Ruangan');
+        $grid->column('inventory_name', 'Inventory')->display(function () {
+            // Decode the JSON array and fetch inventory names
+            $inventoryIds = $this->inventory_id ?? [];
+
+            // Fetch inventory names using the relationship
+            $inventoryNames = Inventory::whereIn('id', $inventoryIds)->pluck('name')->toArray();
+
+            // Convert the array of names to a comma-separated string
+            return implode(', ', $inventoryNames);
+        });
+        $grid->column('borrow_at', 'Mulai Pinjam')->display(function ($borrow_at) {
+            return Carbon::parse($borrow_at)->format('d M Y H:i');
+        });
+        $grid->column('until_at', 'Lama Pinjam')->display(function ($title, $column) {
+            $borrow_at = Carbon::parse($this->borrow_at);
+            $until_at = Carbon::parse($title);
+
+            return $until_at->diffForHumans($borrow_at);
+        });
+        $grid->column('status', 'Status')->display(function ($title, $column) {
+            $admin_approval_status =    $this->admin_approval_status;
+            $returned_at =              $this->returned_at ?? null;
+            $processed_at =             $this->processed_at ?? null;
+                if ($admin_approval_status == 1) {
+                    if ($returned_at != null)
+                        $val = ['success', 'Peminjaman selesai'];
+                    else if ($processed_at != null)
+                        $val = ['success', 'Ruangan sedang digunakan'];
+                        else
+                            $val = ['success', 'Sudah disetujui']; }
+                    else if ($admin_approval_status == 0)
+                        $val = ['info', 'Menunggu persetujuan'];
+                        else
+                            $val = ['danger', 'Ditolak'];
+
+            return '<span class="label-' . $val[0] . '" style="width: 8px;height: 8px;padding: 0;border-radius: 50%;display: inline-block;"></span>&nbsp;&nbsp;'
+                . $val[1];
+        });
+
+        // Role & Permission
+        if (!\Admin::user()->can('create.borrow_rooms'))
+            $grid->disableCreateButton();
+
+        $grid->actions(function ($actions) {
+
+            // The roles with this permission will not able to see the view button in actions column.
+            if (!\Admin::user()->can('edit.borrow_rooms')) {
+                $actions->disableEdit();
+            }
+            // The roles with this permission will not able to see the show button in actions column.
+            if (!\Admin::user()->can('list.borrow_rooms')) {
+                $actions->disableView();
+            }
+            // The roles with this permission will not able to see the delete button in actions column.
+            if (!\Admin::user()->can('delete.borrow_rooms')) {
+                $actions->disableDelete();
+            }
+        });
+
+        return $grid;
+    }
+
+    public function denied(Content $content)
+    {
+        return $content
+            ->header('<b>PEMINJAMAN DITOLAK</b>')
+            ->description(trans('admin.list'))
+            ->body($this->grid_denied());
+    }
+
+     /**
+     * Make a grid builder.
+     *
+     * @return Grid
+     */
+    protected function grid_denied()
+    {
+        $grid = new Grid(new BorrowRoom);
+
+        $admin_user = \Admin::user();
+        // Show query only related to roles
+        if ($admin_user->isRole('peminjam'))
+        $grid->model()->where('borrower_id', $admin_user->id);
+        $grid->model()->where('admin_approval_status', 2);
+
+        $grid->id('ID');
+        $grid->column('full_name', 'Peminjam');
+        $grid->column('status_peminjam', 'Status Peminjam');
+        $grid->column('email', 'Email');
+        $grid->column('phone_number', 'Nomor Telepon');
+        $grid->column('activity', 'Kegiatan');
+        $grid->column('room.name', 'Ruangan');
+        $grid->column('inventory_name', 'Inventory')->display(function () {
+            // Decode the JSON array and fetch inventory names
+            $inventoryIds = $this->inventory_id ?? [];
+
+            // Fetch inventory names using the relationship
+            $inventoryNames = Inventory::whereIn('id', $inventoryIds)->pluck('name')->toArray();
+
+            // Convert the array of names to a comma-separated string
+            return implode(', ', $inventoryNames);
+        });
+        $grid->column('borrow_at', 'Mulai Pinjam')->display(function ($borrow_at) {
+            return Carbon::parse($borrow_at)->format('d M Y H:i');
+        });
+        $grid->column('until_at', 'Lama Pinjam')->display(function ($title, $column) {
+            $borrow_at = Carbon::parse($this->borrow_at);
+            $until_at = Carbon::parse($title);
+
+            return $until_at->diffForHumans($borrow_at);
+        });
+        $grid->column('status', 'Status')->display(function ($title, $column) {
+            $admin_approval_status =    $this->admin_approval_status;
+            $returned_at =              $this->returned_at ?? null;
+            $processed_at =             $this->processed_at ?? null;
+                if ($admin_approval_status == 1) {
+                    if ($returned_at != null)
+                        $val = ['success', 'Peminjaman selesai'];
+                    else if ($processed_at != null)
+                        $val = ['success', 'Ruangan sedang digunakan'];
+                        else
+                            $val = ['success', 'Sudah disetujui']; }
+                    else if ($admin_approval_status == 0)
+                        $val = ['info', 'Menunggu persetujuan'];
+                        else
+                            $val = ['danger', 'Ditolak'];
+
+            return '<span class="label-' . $val[0] . '" style="width: 8px;height: 8px;padding: 0;border-radius: 50%;display: inline-block;"></span>&nbsp;&nbsp;'
+                . $val[1];
+        });
+
+        // Role & Permission
+        if (!\Admin::user()->can('create.borrow_rooms'))
+            $grid->disableCreateButton();
+
+        $grid->actions(function ($actions) {
+
+            // The roles with this permission will not able to see the view button in actions column.
+            if (!\Admin::user()->can('edit.borrow_rooms')) {
+                $actions->disableEdit();
+            }
+            // The roles with this permission will not able to see the show button in actions column.
+            if (!\Admin::user()->can('list.borrow_rooms')) {
+                $actions->disableView();
+            }
+            // The roles with this permission will not able to see the delete button in actions column.
+            if (!\Admin::user()->can('delete.borrow_rooms')) {
+                $actions->disableDelete();
+            }
+        });
+
+        return $grid;
+    }
+
+    public function ongoing(Content $content)
+    {
+        return $content
+            ->header('<b>PEMINJAMAN BERJALAN</b>')
+            ->description(trans('admin.list'))
+            ->body($this->grid_ongoing());
+    }
+
+     /**
+     * Make a grid builder.
+     *
+     * @return Grid
+     */
+    protected function grid_ongoing()
+    {
+        $grid = new Grid(new BorrowRoom);
+
+        $admin_user = \Admin::user();
+        // Show query only related to roles
+        if ($admin_user->isRole('peminjam'))
+        $grid->model()->where('borrower_id', $admin_user->id);
+        $grid->model()->whereNotNull('processed_at');
+        $grid->model()->whereNull('returned_at');
+
+        $grid->id('ID');
+        $grid->column('full_name', 'Peminjam');
+        $grid->column('status_peminjam', 'Status Peminjam');
+        $grid->column('email', 'Email');
+        $grid->column('phone_number', 'Nomor Telepon');
+        $grid->column('activity', 'Kegiatan');
+        $grid->column('room.name', 'Ruangan');
+        $grid->column('inventory_name', 'Inventory')->display(function () {
+            // Decode the JSON array and fetch inventory names
+            $inventoryIds = $this->inventory_id ?? [];
+
+            // Fetch inventory names using the relationship
+            $inventoryNames = Inventory::whereIn('id', $inventoryIds)->pluck('name')->toArray();
+
+            // Convert the array of names to a comma-separated string
+            return implode(', ', $inventoryNames);
+        });
+        $grid->column('borrow_at', 'Mulai Pinjam')->display(function ($borrow_at) {
+            return Carbon::parse($borrow_at)->format('d M Y H:i');
+        });
+        $grid->column('until_at', 'Lama Pinjam')->display(function ($title, $column) {
+            $borrow_at = Carbon::parse($this->borrow_at);
+            $until_at = Carbon::parse($title);
+
+            return $until_at->diffForHumans($borrow_at);
+        });
+        $grid->column('status', 'Status')->display(function ($title, $column) {
+            $admin_approval_status =    $this->admin_approval_status;
+            $returned_at =              $this->returned_at ?? null;
+            $processed_at =             $this->processed_at ?? null;
+                if ($admin_approval_status == 1) {
+                    if ($returned_at != null)
+                        $val = ['success', 'Peminjaman selesai'];
+                    else if ($processed_at != null)
+                        $val = ['success', 'Ruangan sedang digunakan'];
+                        else
+                            $val = ['success', 'Sudah disetujui']; }
+                    else if ($admin_approval_status == 0)
+                        $val = ['info', 'Menunggu persetujuan'];
+                        else
+                            $val = ['danger', 'Ditolak'];
+
+            return '<span class="label-' . $val[0] . '" style="width: 8px;height: 8px;padding: 0;border-radius: 50%;display: inline-block;"></span>&nbsp;&nbsp;'
+                . $val[1];
+        });
+
+        // Role & Permission
+        if (!\Admin::user()->can('create.borrow_rooms'))
+            $grid->disableCreateButton();
+
+        $grid->actions(function ($actions) {
+
+            // The roles with this permission will not able to see the view button in actions column.
+            if (!\Admin::user()->can('edit.borrow_rooms')) {
+                $actions->disableEdit();
+            }
+            // The roles with this permission will not able to see the show button in actions column.
+            if (!\Admin::user()->can('list.borrow_rooms')) {
+                $actions->disableView();
+            }
+            // The roles with this permission will not able to see the delete button in actions column.
+            if (!\Admin::user()->can('delete.borrow_rooms')) {
+                $actions->disableDelete();
+            }
+        });
+
+        return $grid;
+    }
+
+    public function finished(Content $content)
+    {
+        return $content
+            ->header('<b>PEMINJAMAN SELESAI</b>')
+            ->description(trans('admin.list'))
+            ->body($this->grid_finished());
+    }
+
+     /**
+     * Make a grid builder.
+     *
+     * @return Grid
+     */
+    protected function grid_finished()
+    {
+        $grid = new Grid(new BorrowRoom);
+
+        $admin_user = \Admin::user();
+        // Show query only related to roles
+        if ($admin_user->isRole('peminjam'))
+        $grid->model()->where('borrower_id', $admin_user->id);
+        $grid->model()->whereNotNull('returned_at');
+
+        $grid->id('ID');
+        $grid->column('full_name', 'Peminjam');
+        $grid->column('status_peminjam', 'Status Peminjam');
+        $grid->column('email', 'Email');
+        $grid->column('phone_number', 'Nomor Telepon');
+        $grid->column('activity', 'Kegiatan');
+        $grid->column('deleted_at', 'Kegiatan');
+        $grid->column('room.name', 'Ruangan');
+        $grid->column('inventory_name', 'Inventory')->display(function () {
+            // Decode the JSON array and fetch inventory names
+            $inventoryIds = $this->inventory_id ?? [];
+
+            // Fetch inventory names using the relationship
+            $inventoryNames = Inventory::whereIn('id', $inventoryIds)->pluck('name')->toArray();
+
+            // Convert the array of names to a comma-separated string
+            return implode(', ', $inventoryNames);
+        });
+        $grid->column('borrow_at', 'Mulai Pinjam')->display(function ($borrow_at) {
+            return Carbon::parse($borrow_at)->format('d M Y H:i');
+        });
+        $grid->column('until_at', 'Lama Pinjam')->display(function ($title, $column) {
+            $borrow_at = Carbon::parse($this->borrow_at);
+            $until_at = Carbon::parse($title);
+
+            return $until_at->diffForHumans($borrow_at);
+        });
+        $grid->column('status', 'Status')->display(function ($title, $column) {
+            $admin_approval_status =    $this->admin_approval_status;
+            $returned_at =              $this->returned_at ?? null;
+            $processed_at =             $this->processed_at ?? null;
+                if ($admin_approval_status == 1) {
+                    if ($returned_at != null)
+                        $val = ['success', 'Peminjaman selesai'];
+                    else if ($processed_at != null)
+                        $val = ['success', 'Ruangan sedang digunakan'];
+                        else
+                            $val = ['success', 'Sudah disetujui']; }
+                    else if ($admin_approval_status == 0)
+                        $val = ['info', 'Menunggu persetujuan'];
+                        else
+                            $val = ['danger', 'Ditolak'];
+
+            return '<span class="label-' . $val[0] . '" style="width: 8px;height: 8px;padding: 0;border-radius: 50%;display: inline-block;"></span>&nbsp;&nbsp;'
+                . $val[1];
+        });
+
+
+        // Role & Permission
+        if (!\Admin::user()->can('create.borrow_rooms'))
+            $grid->disableCreateButton();
+
+        $grid->actions(function ($actions) {
+
+            // The roles with this permission will not able to see the view button in actions column.
+            if (!\Admin::user()->can('edit.borrow_rooms')) {
+                $actions->disableEdit();
+            }
+            // The roles with this permission will not able to see the show button in actions column.
+            if (!\Admin::user()->can('list.borrow_rooms')) {
+                $actions->disableView();
+            }
+            // The roles with this permission will not able to see the delete button in actions column.
+            if (!\Admin::user()->can('delete.borrow_rooms')) {
+                $actions->disableDelete();
+            }
+        });
+
+        return $grid;
+    }
+
+    public function canceled(Content $content)
+    {
+        return $content
+            ->header('<b>PEMINJAMAN BATAL</b>')
+            ->description(trans('admin.list'))
+            ->body($this->grid_canceled());
+    }
+
+     /**
+     * Make a grid builder.
+     *
+     * @return Grid
+     */
+    protected function grid_canceled()
+    {
+        $grid = new Grid(new BorrowRoom);
+
+        $admin_user = \Admin::user();
+        // Show query only related to roles
+        if ($admin_user->isRole('peminjam'))
+        $grid->model()->where('borrower_id', $admin_user->id);
+        $grid->model()->withTrashed()->whereNotNull('deleted_at');
+
+        $grid->id('ID');
+        $grid->column('full_name', 'Peminjam');
+        $grid->column('status_peminjam', 'Status Peminjam');
+        $grid->column('email', 'Email');
+        $grid->column('phone_number', 'Nomor Telepon');
+        $grid->column('activity', 'Kegiatan');
+        $grid->column('room.name', 'Ruangan');
+        $grid->column('inventory_name', 'Inventory')->display(function () {
+            // Decode the JSON array and fetch inventory names
+            $inventoryIds = $this->inventory_id ?? [];
+
+            // Fetch inventory names using the relationship
+            $inventoryNames = Inventory::whereIn('id', $inventoryIds)->pluck('name')->toArray();
+
+            // Convert the array of names to a comma-separated string
+            return implode(', ', $inventoryNames);
+        });
+        $grid->column('borrow_at', 'Mulai Pinjam')->display(function ($borrow_at) {
+            return Carbon::parse($borrow_at)->format('d M Y H:i');
+        });
+        $grid->column('until_at', 'Lama Pinjam')->display(function ($title, $column) {
+            $borrow_at = Carbon::parse($this->borrow_at);
+            $until_at = Carbon::parse($title);
+
+            return $until_at->diffForHumans($borrow_at);
+        });
+        $grid->column('status', 'Status')->display(function ($title, $column) {
+            $admin_approval_status =    $this->admin_approval_status;
+            $returned_at =              $this->returned_at ?? null;
+            $processed_at =             $this->processed_at ?? null;
+                if ($admin_approval_status == 1) {
+                    if ($returned_at != null)
+                        $val = ['success', 'Peminjaman selesai'];
+                    else if ($processed_at != null)
+                        $val = ['success', 'Ruangan sedang digunakan'];
+                        else
+                            $val = ['success', 'Sudah disetujui']; }
+                    else if ($admin_approval_status == 0)
+                        $val = ['info', 'Menunggu persetujuan'];
+                        else
+                            $val = ['danger', 'Ditolak'];
+                    if ($this->deleted_at != null)
+                        $val = ['danger', 'Dibatalkan'];
+
+
+            return '<span class="label-' . $val[0] . '" style="width: 8px;height: 8px;padding: 0;border-radius: 50%;display: inline-block;"></span>&nbsp;&nbsp;'
+                . $val[1];
+        });
+
+        // Role & Permission
+        if (!\Admin::user()->can('create.borrow_rooms'))
+            $grid->disableCreateButton();
+
+        $grid->actions(function ($actions) {
+
+            // The roles with this permission will not able to see the view button in actions column.
+            if (!\Admin::user()->can('edit.borrow_rooms')) {
+                $actions->disableEdit();
+            }
+            // The roles with this permission will not able to see the show button in actions column.
+            if (!\Admin::user()->can('list.borrow_rooms')) {
+                $actions->disableView();
+            }
+            // The roles with this permission will not able to see the delete button in actions column.
+            if (!\Admin::user()->can('delete.borrow_rooms')) {
+                $actions->disableDelete();
+            }
+        });
+
+        return $grid;
     }
 }
