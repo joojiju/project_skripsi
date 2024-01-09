@@ -31,21 +31,21 @@ Route::group([
     $router->get('/report/rooms', 'ReportController@report_rooms')->name('report.rooms');
     $router->get('/report/buildings', 'ReportController@report_buildings')->name('report.buildings');
 
-    $router->redirect('/borrows/disetujui/{id}/edit', '/admin/borrow-rooms/{id}/edit');
-    $router->redirect('/borrows/ditolak/{id}/edit', '/admin/borrow-rooms/{id}/edit');
-    $router->redirect('/borrows/berjalan/{id}/edit', '/admin/borrow-rooms/{id}/edit');
-    $router->redirect('/borrows/selesai/{id}/edit', '/admin/borrow-rooms/{id}/edit');
-    $router->redirect('/borrows/batal/{id}/edit', '/admin/borrow-rooms/{id}/edit');
+    $router->redirect('/borrows/approved/{id}/edit', '/admin/borrow-rooms/{id}/edit');
+    $router->redirect('/borrows/denied/{id}/edit', '/admin/borrow-rooms/{id}/edit');
+    $router->redirect('/borrows/ongoing/{id}/edit', '/admin/borrow-rooms/{id}/edit');
+    $router->redirect('/borrows/finished/{id}/edit', '/admin/borrow-rooms/{id}/edit');
+    $router->redirect('/borrows/canceled/{id}/edit', '/admin/borrow-rooms/{id}/edit');
 
-    $router->redirect('/borrows/disetujui/{id}', '/admin/borrow-rooms/{id}');
-    $router->redirect('/borrows/ditolak/{id}', '/admin/borrow-rooms/{id}');
-    $router->redirect('/borrows/berjalan/{id}', '/admin/borrow-rooms/{id}');
-    $router->redirect('/borrows/selesai/{id}', '/admin/borrow-rooms/{id}');
-    $router->redirect('/borrows/batal/{id}', '/admin/borrow-rooms/{id}');
+    $router->redirect('/borrows/approved/{id}', '/admin/borrow-rooms/{id}');
+    $router->redirect('/borrows/denied/{id}', '/admin/borrow-rooms/{id}');
+    $router->redirect('/borrows/ongoing/{id}', '/admin/borrow-rooms/{id}');
+    $router->redirect('/borrows/finished/{id}', '/admin/borrow-rooms/{id}');
+    $router->redirect('/borrows/canceled/{id}', '/admin/borrow-rooms/{id}');
 
     $router->group(['prefix' => 'api'], function (Router $router) {
         // AdministratorApiController
-        $router->get('college-students', [AdministratorApiController::class, 'getCollegeStudents']);
+        $router->get('borrowers', [AdministratorApiController::class, 'getBorrowers']);
         $router->get('administrators', [AdministratorApiController::class, 'getAdministrators']);
 
         // RoomApiController

@@ -1,13 +1,12 @@
 @extends('layouts.default')
 @section('content')
-<section class="hero-wrap hero-wrap-2" style="background-image: url('vendor/technext/vacation-rental/images/bg_1.jpg');background-size:cover; height:100vh" data-stellar-background-ratio="0.5">
+<section class="hero-wrap hero-wrap-2" style="background-image: url('vendor/media/bg-1.jpg');background-size:cover; height:100vh" data-stellar-background-ratio="0.5">
     <div class="overlay"></div>
     <div class="container">
       <div class="row no-gutters slider-text align-items-center justify-content-center">
         <div class="col-md-9 ftco-animate text-center">
             <p class="breadcrumbs mb-2"><span class="mr-2"><a href="{{ route('home') }}">Beranda <i class="fa fa-chevron-right"></i></a></span> <span>Cek Ketersediaan <i class="fa fa-chevron-right"></i></span></p>
         </div>
-
 
         <div class="col-md-12 bg-white p-5">
             <div  id='calendar'></div>

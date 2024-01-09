@@ -70,6 +70,9 @@ class ReportController extends Controller
             return '<span class="label-' . $val[0] . '" style="width: 8px;height: 8px;padding: 0;border-radius: 50%;display: inline-block;"></span>&nbsp;&nbsp;'
                 . $val[1];
         });
+        $grid->column('price', 'Persembahan')->display(function ($price) {
+            return 'Rp. ' . number_format($price, 0, ',', '.');
+        });
 
         $grid->disableCreateButton();
 
@@ -123,6 +126,9 @@ class ReportController extends Controller
 
             return '<span class="label-' . $val[0] . '" style="width: 8px;height: 8px;padding: 0;border-radius: 50%;display: inline-block;"></span>&nbsp;&nbsp;'
                 . $val[1];
+        });
+        $grid->column('price', 'Persembahan')->display(function ($price) {
+            return 'Rp. ' . number_format($price, 0, ',', '.');
         });
 
         $grid->disableCreateButton();
@@ -184,6 +190,10 @@ class ReportController extends Controller
             return '<span class="label-' . $val[0] . '" style="width: 8px;height: 8px;padding: 0;border-radius: 50%;display: inline-block;"></span>&nbsp;&nbsp;'
                 . $val[1];
         });
+        $grid->column('price', 'Persembahan')->display(function ($price) {
+            return 'Rp. ' . number_format($price, 0, ',', '.');
+        });
+
         $grid->disableCreateButton();
 
         $grid->actions(function ($actions) {

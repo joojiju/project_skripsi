@@ -80,7 +80,7 @@
             </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('api.v1.borrow-room-with-college-student', []) }}" class="appointment-form">
+                <form method="POST" action="{{ route('api.v1.borrow-room-with-borrower', []) }}" class="appointment-form">
                     @csrf
                     <div class="row">
                         {{-- Hidden input for room_id --}}

@@ -28,7 +28,7 @@
 <script>
     $(document).ready(function() {
         $('.multiple-select').select2({
-            placeholder: "Pilih Inventaris",
+            placeholder: "Perlengkapan (Opsional)",
         });
 
         $('.select2').select2()

@@ -6,9 +6,9 @@
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-start" data-scrollax-parent="true">
           <div class="col-md-7 ftco-animate">
-          	<h2 class="subheading">Selamat datang di SIPRIG (Sistem Informasi Peminjaman Ruangan dan Inventaris Gereja Kristen Jawa Pamulang)</h2>
-          	<h1 class="mb-4">Pinjam ruangan mudah dan cepat</h1>
-            <p><a href="{{ route('rooms') }}" class="btn btn-primary">Cek Ketersediaan</a> <a href="{{ route('status')}}" class="btn btn-white">Cek Status Pengajuan</a></p>
+          	<h2 class="subheading">Selamat datang di SIPRIG GKJ Pamulang</h2>
+          	<h1 class="mb-4">Sistem Informasi Peminjaman Ruangan dan Inventaris Gereja</h1>
+            <p><a href="{{ route('rooms') }}" class="btn btn-primary">Cek Ketersediaan</a> <a href="{{ route('status')}}" class="btn btn-white">Cek Status</a></p>
           </div>
         </div>
       </div>
@@ -18,7 +18,7 @@
     	<div class="container">
 	    	<div class="row justify-content-end">
 	    		<div class="col-lg-5">
-						<form method="POST" action="{{ route('api.v1.borrow-room-with-college-student', []) }}" class="appointment-form">
+						<form method="POST" action="{{ route('api.v1.borrow-room-with-borrower', []) }}" class="appointment-form">
                             @csrf
                             {{-- Show any errors --}}
                             @if ($errors->isNotEmpty())
@@ -125,8 +125,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                     <div class="select2-purple">
-                                    <select name="inventory[]" class="select2 custom-select" multiple="multiple" data-placeholder="Pilih Inventaris" data-dropdown-css-class="select2-purple">
-                                        <option value="" disabled>Pilih Inventaris</option>
+                                    <select name="inventory[]" class="select2 custom-select" multiple="multiple" data-placeholder="Perlengkapan (Opsional)" data-dropdown-css-class="select2-purple">
                                         @forelse ($data['inventories'] as $inventory)
                                         <option value="{{ $inventory->id }}" @if(in_array($inventory->id, old('inventory', []))) selected @endif>
                                         {{ $inventory->name }}

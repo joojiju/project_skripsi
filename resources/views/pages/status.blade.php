@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('content')
-<section class="hero-wrap hero-wrap-2" style="background-image: url('vendor/technext/vacation-rental/images/bg_1.jpg');background-size:cover; height:100vh" data-stellar-background-ratio="0.5">
+<section class="hero-wrap hero-wrap-2" style="background-image: url('vendor/media/bg-1.jpg');background-size:cover; height:100vh" data-stellar-background-ratio="0.5">
     {{-- <div class="overlay"></div> --}}
     <div class="container">
       <div class="row no-gutters slider-text align-items-center justify-content-center">
@@ -23,7 +23,8 @@
 
             {{-- {{ $status_pengajuan->admin_approval_status }} --}}
 
-            @if($status_pengajuan != null)
+            @if(request('resi'))
+            @if($status_pengajuan && $status_pengajuan->id)
             <table class="table">
                 <tr>
                     <td>Nomor Resi</td>
@@ -67,6 +68,9 @@
                 </tr>
                 <tr>
             </table>
+            @else
+                    <p class="text-danger">Nomor Resi tidak ditemukan. Silakan coba lagi.</p>
+                @endif
             @endif
         </div>
       </div>

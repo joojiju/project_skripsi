@@ -12,10 +12,12 @@ use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\BorrowOrderMail;
+use Illuminate\Support\Facades\Mail;
 
 class BorrowRoomApiController extends Controller
 {
-    public function storeBorrowRoomWithCollegeStudent(Request $request)
+    public function storeBorrowRoomWithBorrower(Request $request)
     {
         // dd($request);
         // Set request to variable
@@ -83,7 +85,7 @@ class BorrowRoomApiController extends Controller
             ]);
 
             // Make borrower details to user_details table
-            $college_student_detail = AdminUserDetail::create([
+            $borrower_detail = AdminUserDetail::create([
                 'admin_user_id' =>  $admin_user->id,
                 'data' =>           $data
             ]);
@@ -134,6 +136,21 @@ class BorrowRoomApiController extends Controller
             'borrow_at' =>          Carbon::make($request->borrow_at),
             'until_at' =>           Carbon::make($request->until_at),
         ]);
+
+        // Email sending logic
+        $order = [
+            'id' => $borrow_room->id,
+            'email' => $borrow_room->email,
+            'full_name' => $borrow_room->full_name,
+            'status_peminjam' => $borrow_room->status_peminjam,
+            'admin_approval_status' => $borrow_room->admin_approval_status,
+            'returned_at' => $borrow_room->returned_at,
+            'processed_at' => $borrow_room->processed_at
+];
+
+        Mail::to($borrow_room->email)
+            ->cc(['contact@siprig.com'])
+            ->send(new BorrowOrderMail($order));
 
         // Return success create borrow_rooms
         return redirect(route('home'))->withSuccess(true);

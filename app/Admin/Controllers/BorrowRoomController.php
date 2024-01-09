@@ -15,8 +15,6 @@ use Encore\Admin\Form\Field;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
-use App\Mail\BorrowOrderMail;
-use Illuminate\Support\Facades\Mail;
 
 class BorrowRoomController extends Controller
 {
@@ -202,7 +200,7 @@ class BorrowRoomController extends Controller
         $show->field('notes', 'Catatan');
         $show->field('payment_at', 'Tanggal Pembayaran');
         $show->field('receipt', 'Bukti Pembayaran')->image();
-        $show->field('payment_amount', 'Jumlah Pembayaran')->as(function ($payment_amount) {
+        $show->field('price', 'Jumlah Pembayaran')->as(function ($payment_amount) {
             return 'Rp ' . number_format($payment_amount, 0, ',', '.');
         });
         $show->created_at(trans('admin.created_at'));
@@ -242,19 +240,19 @@ class BorrowRoomController extends Controller
         $form->display('id', 'ID');
         // Peminjam Form
         if ($isKomisirumahtangga) {
-            $form->text('full_name', 'Peminjam');
+            $form->text('full_name', 'Peminjam')->rules('required');
             $form->display('status_peminjam', 'Status Peminjam');
             $form->display('email', 'Email');
             $form->display('phone_number', 'Nomor Telepon');
-            $form->text('activity', 'Kegiatan');
-            $form->select('room_id', 'Ruangan')->options(function ($id) {
+            $form->text('activity', 'Kegiatan')->rules('required');
+            $form->select('room_id', 'Ruangan')->rules('required')->options(function ($id) {
                 return Room::all()->pluck('name', 'id');
             });
-            $form->multipleSelect('inventory_id', 'Inventaris')->options(function ($id) {
+            $form->multipleSelect('inventory_id', 'Inventaris')->rules('required')->options(function ($id) {
                 return Inventory::all()->pluck('name', 'id');
             });
-            $form->datetime('borrow_at', 'Mulai Pinjam')->format('YYYY-MM-DD HH:mm');
-            $form->datetime('until_at', 'Selesai Pinjam')->format('YYYY-MM-DD HH:mm');
+            $form->datetime('borrow_at', 'Mulai Pinjam')->format('YYYY-MM-DD HH:mm')->rules('required');;
+            $form->datetime('until_at', 'Selesai Pinjam')->format('YYYY-MM-DD HH:mm')->rules('required');;
             $form->display('borrow_at', 'Lama Pinjam')->with(function () {
                 $borrow_at = Carbon::parse($this->borrow_at);
                 $until_at = Carbon::parse($this->until_at);
@@ -267,13 +265,13 @@ class BorrowRoomController extends Controller
             });
         } else {
             $form->display('full_name', 'Peminjam');
-            $form->select('room_id', 'Ruangan')->options(function ($id) {
+            $form->select('room_id', 'Ruangan')->rules('required')->options(function ($id) {
                 $room = Room::find($id);
                 if ($room)
                     return [$room->id => $room->name];
             })->ajax('/admin/api/rooms');
-            $form->datetime('borrow_at', 'Mulai Pinjam')->format('YYYY-MM-DD HH:mm');
-            $form->datetime('until_at', 'Selesai Pinjam')->format('YYYY-MM-DD HH:mm');
+            $form->datetime('borrow_at', 'Mulai Pinjam')->format('YYYY-MM-DD HH:mm')->rules('required');;
+            $form->datetime('until_at', 'Selesai Pinjam')->format('YYYY-MM-DD HH:mm')->rules('required');;
         }
 
         // BATAS
@@ -288,7 +286,7 @@ class BorrowRoomController extends Controller
                 if ($administrators)
                     return [$administrators->id => $administrators->name];
             })->ajax('/admin/api/administrators');
-            $form->datetime('processed_at', 'Kunci Diambil Pada')->format('YYYY-MM-DD HH:mm')->with(function ($value, Field $thisField) {
+            $form->datetime('processed_at', 'Kunci Diambil Pada')->rules('required')->format('YYYY-MM-DD HH:mm')->with(function ($value, Field $thisField) {
                 $admin_approval_status = $this->admin_approval_status;
                 if (
                     $admin_approval_status == null
@@ -297,12 +295,12 @@ class BorrowRoomController extends Controller
                 )
                     $thisField->attribute('readonly', 'readonly');
             });
-            $form->datetime('returned_at', 'Diselesaikan Pada')->format('YYYY-MM-DD HH:mm')->with(function ($value, Field $thisField) {
+            $form->datetime('returned_at', 'Diselesaikan Pada')->rules('required')->format('YYYY-MM-DD HH:mm')->with(function ($value, Field $thisField) {
                 if ($this->processed_at == null)
                     $thisField->attribute('readonly', 'readonly');
             });
             $form->image('receipt', 'Bukti Pembayaran')->uniqueName()->removable();
-            $form->currency('payment_amount', 'Jumlah Pembayaran')->symbol('Rp')->digits(0)->default(0);
+            $form->currency('price', 'Jumlah Pembayaran')->symbol('Rp')->digits(0)->default(0);
             $form->datetime('payment_at', 'Tanggal Pembayaran')->format('YYYY-MM-DD HH:mm');
             $form->textarea('notes', 'Catatan');
 
@@ -312,27 +310,8 @@ class BorrowRoomController extends Controller
             }
         }
 
-        // Prepare the email content
-
         $form->saving(function (Form $form) {
             // if ($form->admin_id)
-            // dd($form);
-            $order = [
-                'id' => $form->id,
-                'email' => $form->email,
-                'full_name' => $form->full_name,
-                'status_peminjam' => $form->status_peminjam,
-                'admin_approval_status' => $form->admin_approval_status,
-                'returned_at' => $form->returned_at,
-                'processed_at' => $form->processed_at
-            ];
-
-            // dd($order);
-
-            Mail::to($form->email)
-            ->cc(['contact@siprig.com'])
-            ->send(new BorrowOrderMail($order));
-
             $form->admin_id = \Admin::user()->id;
         });
 
@@ -361,6 +340,8 @@ class BorrowRoomController extends Controller
         if ($admin_user->isRole('peminjam'))
         $grid->model()->where('borrower_id', $admin_user->id);
         $grid->model()->where('admin_approval_status', 1);
+        $grid->model()->whereNull('processed_at');
+        $grid->model()->whereNull('returned_at');
 
         $grid->id('ID');
         $grid->column('full_name', 'Peminjam');

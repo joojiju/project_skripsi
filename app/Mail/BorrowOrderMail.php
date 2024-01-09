@@ -22,7 +22,7 @@ class BorrowOrderMail extends Mailable
 
     public function build()
     {
-        return $this->from('noreplay@siprig.com', 'Siprig Admin')
+        return $this->from('noreply@siprig.com', 'Siprig Admin')
                     ->view('mail.order')
                     ->subject('Status Peminjaman !');
     }

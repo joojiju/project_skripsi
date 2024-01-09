@@ -16,7 +16,7 @@ class AdministratorApiController extends Controller
      * @param  mixed $request
      * @return void
      */
-    public function getCollegeStudents(Request $request)
+    public function getBorrowers(Request $request)
     {
         $q = $request->get('q');
 

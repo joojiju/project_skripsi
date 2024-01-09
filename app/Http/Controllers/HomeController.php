@@ -38,8 +38,7 @@ class HomeController extends Controller
     public function jadwal()
     {
         // Retrieve data from BorrowRoom model with a join on the 'room' table
-        $borrowRoomData = BorrowRoom::whereNull('admin_approval_status')
-        ->orWhere('admin_approval_status', 1)
+        $borrowRoomData = BorrowRoom::where('admin_approval_status', 1)
         ->join('rooms', 'borrow_rooms.room_id', '=', 'rooms.id')
         ->join('buildings', 'rooms.building_id', '=', 'buildings.id')
         ->get([

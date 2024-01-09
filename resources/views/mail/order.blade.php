@@ -6,6 +6,8 @@
     <title>Status Peminjaman</title>
 </head>
 <body style="font-family: 'Helvetica', 'Arial', sans-serif;">
+    <h1>Status Peminjaman</h1>
+    <p>Terima kasih telah melakukan peminjaman ruangan di SIPRIG (Sistem Informasi Peminjaman Ruangan dan Inventaris Gereja Kristen Jawa Pamulang). Berikut merupakan detail dari peminjaman yang telah anda lakukan.</p>
     <table style="width: 100%; border-collapse: collapse;" border="1">
         <tr>
             <td>Nomor Resi</td>

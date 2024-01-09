@@ -184,11 +184,11 @@ class RoomController extends Controller
         if ($form->isEditing())
             $form->display('id', 'ID');
 
-        $form->text('name', 'Nama');
+        $form->text('name', 'Nama')->rules('required');
         $form->select('building_id', 'Gedung')->options(function ($id) {
             return Building::all()->pluck('name', 'id');
         });
-        $form->slider('max_people', 'Maksimal Orang')->options([
+        $form->slider('max_people', 'Maksimal Orang')->rules('required')->options([
             'min' => 1,
             'max' => 100,
             'from' => 20,

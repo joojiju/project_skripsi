@@ -26,5 +26,5 @@ Route::group([
     'prefix'    => 'api/v1',
     'as'        => 'api.v1.'
 ], function (Router $router) {
-    $router->post('borrow-room-with-college-student', [BorrowRoomApiController::class, 'storeBorrowRoomWithCollegeStudent'])->name('borrow-room-with-college-student');
+    $router->post('borrow-room-with-borrower', [BorrowRoomApiController::class, 'storeBorrowRoomWithBorrower'])->name('borrow-room-with-borrower');
 });

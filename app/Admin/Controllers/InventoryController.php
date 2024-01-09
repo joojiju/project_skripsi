@@ -185,12 +185,12 @@ class InventoryController extends Controller
         if ($form->isEditing())
             $form->display('id', 'ID');
 
-        $form->text('name', 'Nama');
+        $form->text('name', 'Nama')->rules('required');
         $form->select('room_id', 'Ruangan')->options(function ($id) {
             return Room::all()->pluck('name', 'id');
         });
-        $form->text('type', 'Tipe/Merk');
-        $form->slider('quantity', 'Jumlah')->options([
+        $form->text('type', 'Tipe/Merk')->rules('required');
+        $form->slider('quantity', 'Jumlah')->rules('required')->options([
             'min' => 1,
             'max' => 100,
             'from' => 20,

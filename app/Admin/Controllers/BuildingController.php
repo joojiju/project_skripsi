@@ -171,7 +171,7 @@ class BuildingController extends Controller
         if ($form->isEditing())
             $form->display('id', 'ID');
 
-        $form->text('name', 'Nama');
+        $form->text('name', 'Nama')->rules('required');
         $form->switch('is_active', 'Aktif?')->states([
             'on' =>     ['value' => 1, 'text' => 'Ya', 'color' => 'success'],
             'off' =>    ['value' => 0, 'text' => 'Tidak', 'color' => 'danger'],

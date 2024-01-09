@@ -78,7 +78,7 @@ return [
     'permission'            => 'Hak akses',
     'route'                 => 'Rute',
     'confirm'               => 'Konfirmasi',
-    'cancel'                => 'Batalkan',
+    'cancel'                => 'Batal',
     'http'                  => [
         'method' => 'HTTP method',
         'path'   => 'HTTP path',

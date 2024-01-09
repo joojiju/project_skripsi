@@ -8576,14 +8576,11 @@ h1, h2, h3, h4, h5,
   -webkit-box-shadow: none !important;
   box-shadow: none !important; }
   .form-control:focus, .form-control:active {
-    border-color: #000000; }
+    border-color: #000000;
+    color: #000000 !important; }
   .form-control::placeholder {
     color: #757575 !important;
     font-family: 'Helvetica Neue', sans-serif !important; }
-
-.form-control option[disabled][selected] {
-  color: #757575 !important;
-  font-family: 'Helvetica Neue', sans-serif !important; }
     
 textarea.form-control {
   height: inherit !important; }
@@ -8650,6 +8647,8 @@ textarea.form-control {
   padding: 35px;
   width: 100%;
   background: #fff;
+  color: #757575 !important;
+  font-family: 'Helvetica Neue', sans-serif !important; 
   border-radius: 5px;
   -webkit-box-shadow: 0px 15px 34px -29px rgba(0, 0, 0, 0.54);
   -moz-box-shadow: 0px 15px 34px -29px rgba(0, 0, 0, 0.54);
@@ -8661,9 +8660,7 @@ textarea.form-control {
     position: relative;
     width: 100%;
     display: block; }
-    .ftco-book .appointment-form .form-group:first-child .form-control {
-      color: #757575 !important;
-      font-family: 'Helvetica Neue', sans-serif !important; }
+
     .ftco-book .appointment-form .form-group .icon {
       position: absolute;
       top: 50% !important;
