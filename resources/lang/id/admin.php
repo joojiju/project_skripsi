@@ -44,7 +44,7 @@ return [
     'back_to_list'          => 'Kembali ke daftar',
     'submit'                => 'Submit',
     'menu'                  => 'Menu',
-    'input'                 => 'Masukan',
+    'input'                 => '',
     'succeeded'             => 'Berhasil',
     'failed'                => 'Gagal',
     'delete_confirm'        => 'Anda yakin ingin menghapus ini ?',

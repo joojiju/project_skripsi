@@ -1,3 +1,45 @@
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-lg-4 mb-md-0 mb-4">
+                <h2 class="footer-heading"><a href="#" class="logo">SIPRIG GKJP</a></h2>
+                <p>Sistem Informasi Peminjaman Ruangan dan Inventaris Gereja Kristen Jawa Pamulang</p>
+                <a href="#about-us">Baca lebih lajut <span class="fa fa-chevron-right" style="font-size: 11px;"></span></a>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-md-0 mb-4">
+                <h2 class="footer-heading">Tag</h2>
+                <div class="tagcloud">
+                <a href="#" class="tag-cloud-link">gkj</a>
+                <a href="#" class="tag-cloud-link">pamulang</a>
+                <a href="#" class="tag-cloud-link">gereja</a>
+                <a href="#" class="tag-cloud-link">online</a>
+                <a href="#" class="tag-cloud-link">pinjam</a>
+                <a href="#" class="tag-cloud-link">ruang</a>
+                <a href="#" class="tag-cloud-link">inventaris</a>
+            </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-md-0 mb-4">
+                <h2 class="footer-heading">Kunjungi Kami</h2>
+                <ul class="list-unstyled">
+                <li><a href="https://gkj-pamulang.org/" target="_blank" class="py-1 d-block">Website</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="w-30 mt-5 border-top py-5">
+        <div class="container">
+            <div class="row">
+
+      <div class="col-md-6 col-lg-12 text-md-center">
+          <p class="mb-0 list-unstyled">
+              <a class="mr-md-3">SIPRIG GKJP</a>
+          </p>
+      </div>
+    </div>
+        </div>
+    </div>
+</footer>
+
 <!-- loader -->
 <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
@@ -34,5 +76,7 @@
         $('.select2').select2()
     });
 </script>
+
+
 
 @yield('page-scripts')

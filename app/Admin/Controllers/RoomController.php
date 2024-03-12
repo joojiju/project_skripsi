@@ -87,7 +87,9 @@ class RoomController extends Controller
 
         $grid->column('name', 'Nama');
         $grid->column('building.name', 'Gedung');
-        $grid->column('max_people', 'Maks Orang');
+        $grid->column('max_people', 'Kapasitas');
+        $grid->column('facility', 'Fasilitas');
+        $grid->column('size', 'Ukuran(m<sup>2</sup>)');
         $grid->column('room_status', 'Status Ruangan')->display(function ($value) {
             $val = ['info', 'Tersedia'];
             foreach ($this->borrow_rooms as $borrow_room) {
@@ -147,8 +149,10 @@ class RoomController extends Controller
         $show->id('ID');
         $show->field('name', 'Nama');
         $show->field('building.name', 'Gedung');
-        $show->field('max_people', 'Maks Orang');
-        $show->field('status', 'Status')->using(RoomStatus::asSelectArray());
+        $show->field('max_people', 'Kapasitas');
+        $show->field('image', 'Gambar')->image();
+        $show->field('facility', 'Fasilitas');
+        $show->field('size', 'Ukuran(m<sup>2</sup>)');
         $show->field('notes', 'Catatan');
         $show->created_at(trans('admin.created_at'));
         $show->updated_at(trans('admin.updated_at'));
@@ -185,16 +189,23 @@ class RoomController extends Controller
             $form->display('id', 'ID');
 
         $form->text('name', 'Nama')->rules('required');
-        $form->select('building_id', 'Gedung')->options(function ($id) {
+        $form->select('building_id', 'Gedung')->rules('required')->options(function ($id) {
             return Building::all()->pluck('name', 'id');
         });
-        $form->slider('max_people', 'Maksimal Orang')->rules('required')->options([
+        $form->slider('max_people', 'Kapasitas')->rules('required')->options([
             'min' => 1,
             'max' => 100,
             'from' => 20,
             'postfix' => ' orang'
         ]);
-        $form->radio('status', 'Status')->options(RoomStatus::asSelectArray())->stacked();
+        $form->image('image', 'Gambar')->rules('required|image');
+        $form->textarea('facility', 'Fasilitas')->rules('required');
+        $form->slider('size', 'Ukuran')->rules('required')->options([
+            'min' => 1,
+            'max' => 100,
+            'from' => 20,
+            'postfix' => ' m<sup>2</sup>'
+        ]);
         $form->textarea('notes', 'Catatan');
 
         if ($form->isEditing()) {

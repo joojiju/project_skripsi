@@ -29,7 +29,7 @@ class BorrowRoomController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('<b>PEMINJAMAN MASUK</b>')
+            ->header('<b>PENGAJUAN MASUK</b>')
             ->description(trans('admin.list'))
             ->body($this->grid());
     }
@@ -95,7 +95,7 @@ class BorrowRoomController extends Controller
 
         $grid->id('ID');
         $grid->column('full_name', 'Peminjam');
-        $grid->column('status_peminjam', 'Status Peminjam');
+        $grid->column('borrower_status', 'Status Peminjam');
         $grid->column('email', 'Email');
         $grid->column('phone_number', 'Nomor Telepon');
         $grid->column('activity', 'Kegiatan');
@@ -176,7 +176,7 @@ class BorrowRoomController extends Controller
         $show = new Show(BorrowRoom::findOrFail($id));
 
         $show->field('full_name', 'Peminjam');
-        $show->field('status_peminjam', 'Status Peminjam');
+        $show->field('borrower_status', 'Status Peminjam');
         $show->field('email', 'Email');
         $show->field('phone_number', 'Nomor Telepon');
         $show->field('activity', 'Kegiatan');
@@ -241,7 +241,7 @@ class BorrowRoomController extends Controller
         // Peminjam Form
         if ($isKomisirumahtangga) {
             $form->text('full_name', 'Peminjam')->rules('required');
-            $form->display('status_peminjam', 'Status Peminjam');
+            $form->display('borrower_status', 'Status Peminjam');
             $form->display('email', 'Email');
             $form->display('phone_number', 'Nomor Telepon');
             $form->text('activity', 'Kegiatan')->rules('required');
@@ -251,8 +251,8 @@ class BorrowRoomController extends Controller
             $form->multipleSelect('inventory_id', 'Inventaris')->rules('required')->options(function ($id) {
                 return Inventory::all()->pluck('name', 'id');
             });
-            $form->datetime('borrow_at', 'Mulai Pinjam')->format('YYYY-MM-DD HH:mm')->rules('required');;
-            $form->datetime('until_at', 'Selesai Pinjam')->format('YYYY-MM-DD HH:mm')->rules('required');;
+            $form->datetime('borrow_at', 'Mulai Pinjam')->format('YYYY-MM-DD HH:mm');
+            $form->datetime('until_at', 'Selesai Pinjam')->format('YYYY-MM-DD HH:mm');
             $form->display('borrow_at', 'Lama Pinjam')->with(function () {
                 $borrow_at = Carbon::parse($this->borrow_at);
                 $until_at = Carbon::parse($this->until_at);
@@ -270,8 +270,8 @@ class BorrowRoomController extends Controller
                 if ($room)
                     return [$room->id => $room->name];
             })->ajax('/admin/api/rooms');
-            $form->datetime('borrow_at', 'Mulai Pinjam')->format('YYYY-MM-DD HH:mm')->rules('required');;
-            $form->datetime('until_at', 'Selesai Pinjam')->format('YYYY-MM-DD HH:mm')->rules('required');;
+            $form->datetime('borrow_at', 'Mulai Pinjam')->format('YYYY-MM-DD HH:mm');
+            $form->datetime('until_at', 'Selesai Pinjam')->format('YYYY-MM-DD HH:mm');
         }
 
         // BATAS
@@ -286,7 +286,7 @@ class BorrowRoomController extends Controller
                 if ($administrators)
                     return [$administrators->id => $administrators->name];
             })->ajax('/admin/api/administrators');
-            $form->datetime('processed_at', 'Kunci Diambil Pada')->rules('required')->format('YYYY-MM-DD HH:mm')->with(function ($value, Field $thisField) {
+            $form->datetime('processed_at', 'Kunci Diambil Pada')->format('YYYY-MM-DD HH:mm')->with(function ($value, Field $thisField) {
                 $admin_approval_status = $this->admin_approval_status;
                 if (
                     $admin_approval_status == null
@@ -295,7 +295,7 @@ class BorrowRoomController extends Controller
                 )
                     $thisField->attribute('readonly', 'readonly');
             });
-            $form->datetime('returned_at', 'Diselesaikan Pada')->rules('required')->format('YYYY-MM-DD HH:mm')->with(function ($value, Field $thisField) {
+            $form->datetime('returned_at', 'Diselesaikan Pada')->format('YYYY-MM-DD HH:mm')->with(function ($value, Field $thisField) {
                 if ($this->processed_at == null)
                     $thisField->attribute('readonly', 'readonly');
             });
@@ -321,7 +321,7 @@ class BorrowRoomController extends Controller
     public function approved(Content $content)
     {
         return $content
-            ->header('<b>PEMINJAMAN DISETUJUI</b>')
+            ->header('<b>PENGAJUAN DISETUJUI</b>')
             ->description(trans('admin.list'))
             ->body($this->grid_approved());
     }
@@ -345,7 +345,7 @@ class BorrowRoomController extends Controller
 
         $grid->id('ID');
         $grid->column('full_name', 'Peminjam');
-        $grid->column('status_peminjam', 'Status Peminjam');
+        $grid->column('borrower_status', 'Status Peminjam');
         $grid->column('email', 'Email');
         $grid->column('phone_number', 'Nomor Telepon');
         $grid->column('activity', 'Kegiatan');
@@ -415,7 +415,7 @@ class BorrowRoomController extends Controller
     public function denied(Content $content)
     {
         return $content
-            ->header('<b>PEMINJAMAN DITOLAK</b>')
+            ->header('<b>PENGAJUAN DITOLAK</b>')
             ->description(trans('admin.list'))
             ->body($this->grid_denied());
     }
@@ -437,12 +437,12 @@ class BorrowRoomController extends Controller
 
         $grid->id('ID');
         $grid->column('full_name', 'Peminjam');
-        $grid->column('status_peminjam', 'Status Peminjam');
+        $grid->column('borrower_status', 'Status Peminjam');
         $grid->column('email', 'Email');
         $grid->column('phone_number', 'Nomor Telepon');
         $grid->column('activity', 'Kegiatan');
         $grid->column('room.name', 'Ruangan');
-        $grid->column('inventory_name', 'Inventory')->display(function () {
+        $grid->column('inventory_name', 'Inventaris')->display(function () {
             // Decode the JSON array and fetch inventory names
             $inventoryIds = $this->inventory_id ?? [];
 
@@ -530,12 +530,12 @@ class BorrowRoomController extends Controller
 
         $grid->id('ID');
         $grid->column('full_name', 'Peminjam');
-        $grid->column('status_peminjam', 'Status Peminjam');
+        $grid->column('borrower_status', 'Status Peminjam');
         $grid->column('email', 'Email');
         $grid->column('phone_number', 'Nomor Telepon');
         $grid->column('activity', 'Kegiatan');
         $grid->column('room.name', 'Ruangan');
-        $grid->column('inventory_name', 'Inventory')->display(function () {
+        $grid->column('inventory_name', 'Inventaris')->display(function () {
             // Decode the JSON array and fetch inventory names
             $inventoryIds = $this->inventory_id ?? [];
 
@@ -622,13 +622,13 @@ class BorrowRoomController extends Controller
 
         $grid->id('ID');
         $grid->column('full_name', 'Peminjam');
-        $grid->column('status_peminjam', 'Status Peminjam');
+        $grid->column('borrower_status', 'Status Peminjam');
         $grid->column('email', 'Email');
         $grid->column('phone_number', 'Nomor Telepon');
         $grid->column('activity', 'Kegiatan');
         $grid->column('deleted_at', 'Kegiatan');
         $grid->column('room.name', 'Ruangan');
-        $grid->column('inventory_name', 'Inventory')->display(function () {
+        $grid->column('inventory_name', 'Inventaris')->display(function () {
             // Decode the JSON array and fetch inventory names
             $inventoryIds = $this->inventory_id ?? [];
 
@@ -716,12 +716,12 @@ class BorrowRoomController extends Controller
 
         $grid->id('ID');
         $grid->column('full_name', 'Peminjam');
-        $grid->column('status_peminjam', 'Status Peminjam');
+        $grid->column('borrower_status', 'Status Peminjam');
         $grid->column('email', 'Email');
         $grid->column('phone_number', 'Nomor Telepon');
         $grid->column('activity', 'Kegiatan');
         $grid->column('room.name', 'Ruangan');
-        $grid->column('inventory_name', 'Inventory')->display(function () {
+        $grid->column('inventory_name', 'Inventaris')->display(function () {
             // Decode the JSON array and fetch inventory names
             $inventoryIds = $this->inventory_id ?? [];
 

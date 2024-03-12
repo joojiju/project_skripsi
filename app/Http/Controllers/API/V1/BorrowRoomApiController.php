@@ -24,13 +24,13 @@ class BorrowRoomApiController extends Controller
         $email =            $request->email;
         $full_name =        ($request->full_name);
         $phone_number =     $request->phone_number;
-        $status_peminjam =  $request->status_peminjam;
+        $borrower_status =  $request->borrower_status;
         $activity =         $request->activity;
         $data =             json_encode([
             'email' =>              $email,
             'full_name' =>          $full_name,
             'phone_number' =>       $phone_number,
-            'status_peminjam' =>    $status_peminjam,
+            'borrower_status' =>    $borrower_status,
             'activity' =>           $activity,
         ], true);
 
@@ -38,7 +38,7 @@ class BorrowRoomApiController extends Controller
             'email' =>              'required|string',
             'full_name' =>          'required|string',
             'phone_number' =>       'required|numeric',
-            'status_peminjam' =>    'required',
+            'borrower_status' =>    'required',
             'activity' =>           'required|string',
             'borrow_at' =>          'required|date|after_or_equal:' . now()->format('d-m-Y H:i'),
             'until_at' =>           'required|date|after_or_equal:borrow_at',
@@ -62,11 +62,24 @@ class BorrowRoomApiController extends Controller
             'room.required' =>      'Kolom ruangan wajib diisi.',
             'inventory.required' => 'Kolom inventaris wajib diisi.',
 
-            'status_peminjam.required' => 'Kolom status wajib diisi.',
+            'borrower_status.required' => 'Kolom status wajib diisi.',
         ]);
 
-        if ($validator->fails())
-            return redirect(route('home'))->withInput($request->input())->withErrors($validator);
+        $validator->stopOnFirstFailure();
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+        
+            // Ensure there are errors and get the first error key
+            if ($errors->any()) {
+                $firstErrorKey = key($errors->messages());
+                $firstErrorMessage = $errors->first($firstErrorKey);
+        
+                return redirect(route('home'))
+                    ->withInput($request->input())
+                    ->withErrors([$firstErrorKey => $firstErrorMessage]);
+            }
+        }
 
         // Check if admin_user (borrower) is exist
         $admin_user = Administrator::where('username', $email)->first();
@@ -118,7 +131,6 @@ class BorrowRoomApiController extends Controller
             if (!$borrow_rooms_is_not_finished)
                 return redirect(route('home'))->withInput($request->input())->withErrors([
                     'Peminjam dengan email ' . $admin_user->username . ' masih memiliki peminjaman yang belum selesai.',
-                    'login_for_more_info', //
                 ]);
         }
 
@@ -128,7 +140,7 @@ class BorrowRoomApiController extends Controller
             'email' =>              $email,
             'full_name' =>          $full_name,
             'phone_number' =>       $phone_number,
-            'status_peminjam' =>    $status_peminjam,
+            'borrower_status' =>    $borrower_status,
             'activity' =>           $activity,
             'borrower_id' =>        $admin_user->id,
             'room_id' =>            $request->room,
@@ -142,7 +154,7 @@ class BorrowRoomApiController extends Controller
             'id' => $borrow_room->id,
             'email' => $borrow_room->email,
             'full_name' => $borrow_room->full_name,
-            'status_peminjam' => $borrow_room->status_peminjam,
+            'borrower_status' => $borrow_room->borrower_status,
             'admin_approval_status' => $borrow_room->admin_approval_status,
             'returned_at' => $borrow_room->returned_at,
             'processed_at' => $borrow_room->processed_at

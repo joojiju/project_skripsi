@@ -20,7 +20,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/rooms', [HomeController::class, 'rooms'])->name('rooms');
 Route::get('/status', [HomeController::class, 'status'])->name('status');
 
-Route::get('/jadwal', [HomeController::class, 'jadwal'])->name('jadwal');
+Route::get('/schedule', [HomeController::class, 'schedule'])->name('schedule');
 
 Route::group([
     'prefix'    => 'api/v1',

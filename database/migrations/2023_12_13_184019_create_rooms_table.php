@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('max_people');
-            $table->tinyInteger('status')->default(0);
+            $table->integer('size');
+            $table->string('facility');
+            $table->string('image');
             $table->text('notes')->nullable();
             $table->foreignId('building_id')->constrained();
             $table->timestamps();

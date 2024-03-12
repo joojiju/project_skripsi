@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('full_name');
             $table->string('phone_number');
-            $table->string('status_peminjam');
+            $table->string('borrower_status');
             $table->string('activity');
             $table->foreignId('room_id')->constrained();
             $table->json('inventory_id');

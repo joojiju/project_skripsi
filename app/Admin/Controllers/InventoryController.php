@@ -149,7 +149,7 @@ class InventoryController extends Controller
         $show->field('type', 'Tipe/Merk');
         $show->field('room.name', 'Ruangan');
         $show->field('quantity', 'Jumlah');
-        $show->field('status', 'Status')->using(InventoryStatus::asSelectArray());
+        $show->field('image', 'Gambar')->image();
         $show->field('notes', 'Catatan');
         $show->created_at(trans('admin.created_at'));
         $show->updated_at(trans('admin.updated_at'));
@@ -186,7 +186,7 @@ class InventoryController extends Controller
             $form->display('id', 'ID');
 
         $form->text('name', 'Nama')->rules('required');
-        $form->select('room_id', 'Ruangan')->options(function ($id) {
+        $form->select('room_id', 'Ruangan')->rules('required')->options(function ($id) {
             return Room::all()->pluck('name', 'id');
         });
         $form->text('type', 'Tipe/Merk')->rules('required');
@@ -196,7 +196,7 @@ class InventoryController extends Controller
             'from' => 20,
             'postfix' => ' buah'
         ]);
-        $form->radio('status', 'Status')->options(InventoryStatus::asSelectArray())->stacked();
+        $form->image('image', 'Gambar')->rules('required|image');
         $form->textarea('notes', 'Catatan');
 
         if ($form->isEditing()) {

@@ -27,7 +27,7 @@ class BorrowRoom extends Model
         'email',
         'full_name',
         'phone_number',
-        'status_peminjam',
+        'borrower_status',
         'activity',
         'room_id',
         'inventory_id',
@@ -37,7 +37,10 @@ class BorrowRoom extends Model
         'admin_approval_status',
         'processed_at',
         'returned_at',
+        'receipt',
+        'price',
         'notes',
+        'payment_at',
     ];
 
     /**

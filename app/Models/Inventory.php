@@ -21,11 +21,6 @@ class Inventory extends Model
         return $this->belongsTo(Room::class);
     }
 
-    public function admin()
-    {
-        return $this->belongsTo(Administrator::class);
-    }
-
     public function borrow_rooms()
     {
         return $this->hasMany(BorrowRoom::class);

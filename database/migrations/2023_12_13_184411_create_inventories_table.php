@@ -16,17 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('type');
             $table->integer('quantity');
-            $table->tinyInteger('status')->default(0);
+            $table->string('image');
             $table->text('notes')->nullable();
             $table->foreignId('room_id')->constrained();
-            $table->unsignedInteger('admin_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('admin_id')
-                ->references('id')->on('admin_users')
-                ->onUpdate('CASCADE')
-                ->onDelete('RESTRICT');
         });
     }
 

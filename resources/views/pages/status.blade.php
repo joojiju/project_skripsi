@@ -2,7 +2,7 @@
 
 @section('content')
 <section class="hero-wrap hero-wrap-2" style="background-image: url('vendor/media/bg-1.jpg');background-size:cover; height:100vh" data-stellar-background-ratio="0.5">
-    {{-- <div class="overlay"></div> --}}
+    <div class="overlay"></div>
     <div class="container">
       <div class="row no-gutters slider-text align-items-center justify-content-center">
         <div class="col-md-9 ftco-animate text-center mt-5">
@@ -36,7 +36,7 @@
                 </tr>
                 <tr>
                     <td>Status Peminjam</td>
-                    <th>: {{ $status_pengajuan->status_peminjam }}</th>
+                    <th>: {{ $status_pengajuan->borrower_status }}</th>
                 </tr>
                 <tr>
                     <td>Status</td>

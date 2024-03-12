@@ -35,7 +35,7 @@ class HomeController extends Controller
         return view('pages.status', compact('status_pengajuan'));
     }
 
-    public function jadwal()
+    public function schedule()
     {
         // Retrieve data from BorrowRoom model with a join on the 'room' table
         $borrowRoomData = BorrowRoom::where('admin_approval_status', 1)

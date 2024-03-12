@@ -38,7 +38,7 @@ class ReportController extends Controller
         $grid = new Grid(new BorrowRoom);
 
         $grid->id('ID Peminjaman');
-        $grid->column('inventory_name', 'Inventory')->display(function () {
+        $grid->column('inventory_name', 'Inventaris')->display(function () {
             // Decode the JSON array and fetch inventory names
             $inventoryIds = $this->inventory_id ?? [];
 
@@ -50,6 +50,12 @@ class ReportController extends Controller
         });
         $grid->column('borrow_at', 'Mulai Pinjam')->display(function ($borrow_at) {
             return Carbon::parse($borrow_at)->format('d M Y H:i');
+        });
+        $grid->column('until_at', 'Lama Pinjam')->display(function ($title, $column) {
+            $borrow_at = Carbon::parse($this->borrow_at);
+            $until_at = Carbon::parse($title);
+
+            return $until_at->diffForHumans($borrow_at);
         });
         $grid->column('status', 'Status')->display(function ($title, $column) {
             $admin_approval_status =    $this->admin_approval_status;
@@ -107,6 +113,12 @@ class ReportController extends Controller
         $grid->column('room.name', 'Ruangan');
         $grid->column('borrow_at', 'Mulai Pinjam')->display(function ($borrow_at) {
             return Carbon::parse($borrow_at)->format('d M Y H:i');
+        });
+        $grid->column('until_at', 'Lama Pinjam')->display(function ($title, $column) {
+            $borrow_at = Carbon::parse($this->borrow_at);
+            $until_at = Carbon::parse($title);
+
+            return $until_at->diffForHumans($borrow_at);
         });
         $grid->column('status', 'Status')->display(function ($title, $column) {
             $admin_approval_status =    $this->admin_approval_status;
@@ -170,6 +182,12 @@ class ReportController extends Controller
         });
         $grid->column('borrow_at', 'Mulai Pinjam')->display(function ($borrow_at) {
             return Carbon::parse($borrow_at)->format('d M Y H:i');
+        });
+        $grid->column('until_at', 'Lama Pinjam')->display(function ($title, $column) {
+            $borrow_at = Carbon::parse($this->borrow_at);
+            $until_at = Carbon::parse($title);
+
+            return $until_at->diffForHumans($borrow_at);
         });
         $grid->column('status', 'Status')->display(function ($title, $column) {
             $admin_approval_status =    $this->admin_approval_status;
