@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('borrower_status');
             $table->string('activity');
             $table->foreignId('room_id')->constrained();
-            $table->json('inventory_id');
+            $table->json('inventory_id')->nullable();
             $table->dateTime('borrow_at');
             $table->dateTime('until_at');
             $table->unsignedInteger('admin_id')->nullable();

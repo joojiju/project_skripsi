@@ -43,7 +43,7 @@ class BorrowRoomApiController extends Controller
             'borrow_at' =>          'required|date|after_or_equal:' . now()->format('d-m-Y H:i'),
             'until_at' =>           'required|date|after_or_equal:borrow_at',
             'room' =>               'required',
-            'inventory' =>          'required',
+
         ], [
             'email.required' =>             'Kolom email wajib diisi.',
             'full_name.required' =>         'Kolom nama lengkap wajib diisi.',
@@ -60,7 +60,6 @@ class BorrowRoomApiController extends Controller
             'until_at.after_or_equal' =>    'Kolom tgl selesai harus berisi tanggal setelah atau sama dengan tgl mulai.',
 
             'room.required' =>      'Kolom ruangan wajib diisi.',
-            'inventory.required' => 'Kolom inventaris wajib diisi.',
 
             'borrower_status.required' => 'Kolom status wajib diisi.',
         ]);
@@ -165,6 +164,6 @@ class BorrowRoomApiController extends Controller
             ->send(new BorrowOrderMail($order));
 
         // Return success create borrow_rooms
-        return redirect(route('home'))->withSuccess(true);
+        return redirect(route('home'))->withSuccess($borrow_room->id);
     }
 }

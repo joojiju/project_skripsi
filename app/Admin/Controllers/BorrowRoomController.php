@@ -102,7 +102,7 @@ class BorrowRoomController extends Controller
         $grid->column('room.name', 'Ruangan');
         // Access JSON data using the `->` notation
 
-        $grid->column('inventory_name', 'Inventory')->display(function () {
+        $grid->column('inventory_name', 'Inventaris')->display(function () {
             // Decode the JSON array and fetch inventory names
             $inventoryIds = $this->inventory_id ?? [];
 
@@ -181,7 +181,7 @@ class BorrowRoomController extends Controller
         $show->field('phone_number', 'Nomor Telepon');
         $show->field('activity', 'Kegiatan');
         $show->field('room.name', 'Ruangan');
-        $show->field('inventory_name', 'Inventory')->display(function () {
+        $show->field('inventory_name', 'Inventaris')->display(function () {
             // Decode the JSON array and fetch inventory names
             $inventoryIds = $this->inventory_id ?? [];
 
@@ -350,7 +350,7 @@ class BorrowRoomController extends Controller
         $grid->column('phone_number', 'Nomor Telepon');
         $grid->column('activity', 'Kegiatan');
         $grid->column('room.name', 'Ruangan');
-        $grid->column('inventory_name', 'Inventory')->display(function () {
+        $grid->column('inventory_name', 'Inventaris')->display(function () {
             // Decode the JSON array and fetch inventory names
             $inventoryIds = $this->inventory_id ?? [];
 

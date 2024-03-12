@@ -158,7 +158,7 @@
                             @endif
                             @if (session('success'))
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    Pinjam ruang berhasil, silahkan cek email untuk melihat nomor resi dan silahkan cek status <a href="{{ route('status') }}">disini</a>.
+                                    Pengajuan peminjaman berhasil dengan nomor resi: {{ session('success') }}, silahkan cek email untuk melihat detail pengajuan dan silahkan cek status <a href="{{ route('status') }}">disini</a>.
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
