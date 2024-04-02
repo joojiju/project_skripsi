@@ -248,7 +248,7 @@ class BorrowRoomController extends Controller
             $form->select('room_id', 'Ruangan')->rules('required')->options(function ($id) {
                 return Room::all()->pluck('name', 'id');
             });
-            $form->multipleSelect('inventory_id', 'Inventaris')->rules('required')->options(function ($id) {
+            $form->multipleSelect('inventory_id', 'Inventaris')->options(function ($id) {
                 return Inventory::all()->pluck('name', 'id');
             });
             $form->datetime('borrow_at', 'Mulai Pinjam')->format('YYYY-MM-DD HH:mm');

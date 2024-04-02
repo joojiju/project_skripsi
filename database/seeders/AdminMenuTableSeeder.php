@@ -327,18 +327,7 @@ class AdminMenuTableSeeder extends Seeder
                 'created_at' => '2021-08-04 22:22:06',
                 'updated_at' => '2021-08-12 02:18:21',
             ),
-            26 =>
-            array(
-                'id' => 27,
-                'parent_id' => 24,
-                'order' => 16,
-                'title' => 'Peminjaman Gedung',
-                'icon' => 'fa-file',
-                'uri' => '/report/buildings',
-                'permission' => '',
-                'created_at' => '2021-08-04 22:22:06',
-                'updated_at' => '2021-08-12 02:18:21',
-            ),
+
         );
 
         // Checking if the table already have a query
